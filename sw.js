@@ -1,12 +1,12 @@
-const CACHE_NAME = "pulmoniq-v2";
+const CACHE_NAME = "pulmoniq-v3";
 const ASSETS = [
   "./",
   "./index.html",
   "./manifest.json",
   "./sw.js",
-  "./assets/logo.png",
-  "./assets/icon-192.png",
-  "./assets/icon-512.png"
+  "./assets/logo.png.PNG",
+  "./assets/icon-192.png.PNG",
+  "./assets/icon-512.png.PNG"
 ];
 
 self.addEventListener("install", (event) => {
