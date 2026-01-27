@@ -1,4 +1,4 @@
-const CACHE_NAME = "pulmoniq-v3";
+const CACHE = "pulmoniq-v5";
 const ASSETS = [
   "./",
   "./index.html",
@@ -9,20 +9,20 @@ const ASSETS = [
   "./assets/icon-512.png.PNG"
 ];
 
-self.addEventListener("install", (event) => {
-  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)));
+self.addEventListener("install", (e) => {
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
   self.skipWaiting();
 });
 
-self.addEventListener("activate", (event) => {
-  event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.map((k) => (k === CACHE_NAME ? null : caches.delete(k))))
+self.addEventListener("activate", (e) => {
+  e.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.map(k => (k === CACHE ? null : caches.delete(k))))
     )
   );
   self.clients.claim();
 });
 
-self.addEventListener("fetch", (event) => {
-  event.respondWith(caches.match(event.request).then((cached) => cached || fetch(event.request)));
+self.addEventListener("fetch", (e) => {
+  e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
 });
