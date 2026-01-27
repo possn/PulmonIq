@@ -1,0 +1,909 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <title>Pulmoniq — Pediatric ARM</title>
+  <meta name="description" content="Pulmoniq — Pediatric ARM. Apoio à decisão (educacional) para manobra de recrutamento (recrutável) e estratégia em doente obstrutivo (pediatria)."/>
+  <meta name="theme-color" content="#0b1220"/>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="icon" href="assets/icon-192.png"/>
+
+  <style>
+    :root{
+      --bg1:#071025; --bg2:#0b1220;
+      --card: rgba(17,26,46,.92);
+      --line:#263554;
+      --text:#e7eefc;
+      --muted:#8aa0c2;
+      --chip:#172341;
+      --btn:#1f2f52;
+
+      --good:#34d399;
+      --warn:#fbbf24;
+      --bad:#fb7185;
+
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:var(--text);
+      font-family:var(--sans);
+    }
+    .wrap{max-width:1120px;margin:0 auto;padding:18px}
+    header{
+      display:flex;align-items:center;gap:14px;
+      margin-bottom:14px;
+    }
+    header img{
+      width:56px;height:56px;border-radius:14px;object-fit:cover;
+      background:#0f172a;border:1px solid var(--line);
+    }
+    h1{font-size:18px;margin:0}
+    .sub{color:var(--muted);font-size:13px;margin-top:2px;line-height:1.3}
+    .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}
+    @media (max-width:980px){.grid{grid-template-columns:1fr}}
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:14px;
+    }
+    .card h2{margin:0 0 10px;font-size:14px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media (max-width:560px){.row{grid-template-columns:1fr}}
+    label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px}
+    input,select,textarea{
+      width:100%;
+      padding:10px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#0c162d;
+      color:var(--text);
+      outline:none;
+    }
+    input::placeholder, textarea::placeholder{color:#6f86ab}
+    textarea{min-height:84px;resize:vertical}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    button{
+      background:var(--btn);
+      border:1px solid var(--line);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+    }
+    button:hover{filter:brightness(1.07)}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:7px 10px;border-radius:999px;
+      border:1px solid var(--line);
+      background:var(--chip);
+      font-size:12px;
+    }
+    .k{font-family:var(--mono);font-size:12px;color:#cfe2ff}
+    .good{color:var(--good)} .warn{color:var(--warn)} .bad{color:var(--bad)}
+    .hr{height:1px;background:var(--line);margin:12px 0}
+    .small{font-size:12px;color:var(--muted);line-height:1.4}
+    .list{margin:8px 0 0 18px;color:#d9e6ff}
+    .list li{margin:4px 0}
+    .box{
+      border:1px solid var(--line);
+      background:#0b1732;
+      border-radius:14px;
+      padding:10px;
+    }
+    .tag{
+      display:inline-block;
+      padding:5px 8px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:#0b1732;
+      font-size:12px;
+      margin:0 6px 6px 0;
+    }
+    .warnbox{
+      border:1px solid rgba(251,191,36,.45);
+      background:rgba(251,191,36,.08);
+      border-radius:14px;
+      padding:10px;
+    }
+    .badbox{
+      border:1px solid rgba(251,113,133,.55);
+      background:rgba(251,113,133,.10);
+      border-radius:14px;
+      padding:10px;
+    }
+    .okbox{
+      border:1px solid rgba(52,211,153,.45);
+      background:rgba(52,211,153,.08);
+      border-radius:14px;
+      padding:10px;
+    }
+    .footer{
+      margin-top:14px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.45;
+    }
+    .mono{font-family:var(--mono)}
+  </style>
+</head>
+
+<body>
+<div class="wrap">
+  <header>
+    <img src="assets/logo.png" alt="Pulmoniq logo">
+    <div>
+      <h1>Pulmoniq</h1>
+      <div class="sub">Pediatric ARM · Apoio à decisão (educacional) · Modo Recrutável vs Modo Obstrutivo</div>
+    </div>
+  </header>
+
+  <div class="grid">
+    <!-- LEFT: INPUTS -->
+    <div class="card">
+      <h2>1) Contexto e dados</h2>
+
+      <div class="row">
+        <div>
+          <label>Modo clínico</label>
+          <select id="mode">
+            <option value="recruitable">Recrutável (ARDS / atelectasia) — considerar ARM stepwise</option>
+            <option value="obstructive">Obstrutivo (asma / bronquiolite) — evitar ARM clássica; estratégia anti-auto-PEEP</option>
+          </select>
+        </div>
+        <div>
+          <label>Diagnóstico / nota rápida</label>
+          <input id="dx" placeholder="ex.: ARDS moderado; atelectasia pós-operatória; asma grave...">
+        </div>
+      </div>
+
+      <div class="hr"></div>
+
+      <div class="row">
+        <div>
+          <label>Peso (kg)</label>
+          <input id="weight" inputmode="decimal" placeholder="ex.: 12.5">
+        </div>
+        <div>
+          <label>Idade (meses) (opcional)</label>
+          <input id="age_m" inputmode="numeric" placeholder="ex.: 18">
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>FiO₂ (0–1)</label>
+          <input id="fio2" inputmode="decimal" placeholder="ex.: 0.60">
+        </div>
+        <div>
+          <label>SpO₂ (%)</label>
+          <input id="spo2" inputmode="decimal" placeholder="ex.: 90">
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>EtCO₂ (mmHg) (opcional)</label>
+          <input id="etco2" inputmode="decimal" placeholder="ex.: 55">
+        </div>
+        <div>
+          <label>PaCO₂ (mmHg) (opcional)</label>
+          <input id="paco2" inputmode="decimal" placeholder="ex.: 60">
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>MAP / PAM (mmHg)</label>
+          <input id="map" inputmode="decimal" placeholder="ex.: 55">
+        </div>
+        <div>
+          <label>Vasoactivos em escalada? (sim/não)</label>
+          <select id="vaso">
+            <option value="no">não</option>
+            <option value="yes">sim</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="hr"></div>
+
+      <div class="row">
+        <div>
+          <label>Modo ventilatório</label>
+          <select id="vent_mode">
+            <option>PC</option>
+            <option>VC</option>
+            <option>PRVC</option>
+            <option>SIMV</option>
+            <option>Outro</option>
+          </select>
+        </div>
+        <div>
+          <label>PEEP actual (cmH₂O)</label>
+          <input id="peep" inputmode="decimal" placeholder="ex.: 8">
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Pplat (cmH₂O) (se disponível)</label>
+          <input id="pplat" inputmode="decimal" placeholder="ex.: 24">
+        </div>
+        <div>
+          <label>PIP (cmH₂O) (opcional)</label>
+          <input id="pip" inputmode="decimal" placeholder="ex.: 30">
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Vt (mL/kg) (se VC/PRVC) (opcional)</label>
+          <input id="vt_mlkg" inputmode="decimal" placeholder="ex.: 6">
+        </div>
+        <div>
+          <label>Complacência / tendência (opcional)</label>
+          <select id="compliance_hint">
+            <option value="unknown">desconhecido</option>
+            <option value="improves_with_peep">melhora quando ↑ PEEP</option>
+            <option value="worsens_with_peep">piora quando ↑ PEEP</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row" id="obstRow" style="display:none">
+        <div>
+          <label>Auto-PEEP suspeita / medida? (sim/não)</label>
+          <select id="auto_peep">
+            <option value="unknown">desconhecido</option>
+            <option value="no">não</option>
+            <option value="yes">sim</option>
+          </select>
+        </div>
+        <div>
+          <label>Broncoespasmo dominante? (sim/não)</label>
+          <select id="bronchospasm">
+            <option value="unknown">desconhecido</option>
+            <option value="no">não</option>
+            <option value="yes">sim</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="hr"></div>
+
+      <h2>2) Parâmetros do protocolo (parametrizável)</h2>
+      <div class="small">
+        A app <span class="mono">não impõe valores</span>: tu defines o protocolo local. O output gera passos e critérios de paragem a partir destes parâmetros.
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Step PEEP (cmH₂O)</label>
+          <input id="step_peep" inputmode="decimal" placeholder="ex.: 2">
+        </div>
+        <div>
+          <label>Tempo por step (seg)</label>
+          <input id="step_time" inputmode="numeric" placeholder="ex.: 60">
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>PEEP alvo máximo (cmH₂O)</label>
+          <input id="peep_max" inputmode="decimal" placeholder="ex.: 16">
+        </div>
+        <div>
+          <label>Limite Pplat (cmH₂O) (paragem)</label>
+          <input id="pplat_stop" inputmode="decimal" placeholder="ex.: 28">
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Queda MAP (mmHg) (paragem)</label>
+          <input id="map_drop_stop" inputmode="decimal" placeholder="ex.: 10">
+        </div>
+        <div>
+          <label>SpO₂ mínima (%) (paragem)</label>
+          <input id="spo2_stop" inputmode="decimal" placeholder="ex.: 85">
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Notas/Protocolo local (texto aparece no output)</label>
+          <textarea id="local_protocol" placeholder="Cole aqui notas do protocolo institucional, e.g. condições, limites, equipa, monitorização..."></textarea>
+        </div>
+        <div>
+          <label>Risco de fuga aérea / pneumotórax não drenado? (sim/não)</label>
+          <select id="air_leak">
+            <option value="unknown">desconhecido</option>
+            <option value="no">não</option>
+            <option value="yes">sim</option>
+          </select>
+          <div style="height:10px"></div>
+          <label>Sedação adequada / sincronia (sim/não)</label>
+          <select id="sedation">
+            <option value="unknown">desconhecido</option>
+            <option value="no">não</option>
+            <option value="yes">sim</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="runBtn">Avaliar</button>
+        <button id="fillRecruit">Exemplo Recrutável</button>
+        <button id="fillObst">Exemplo Obstrutivo</button>
+        <button id="clearBtn">Limpar</button>
+      </div>
+
+      <div class="footer">
+        <b>Importante:</b> esta ferramenta é <b>apoio à decisão</b> e <b>educacional</b>. Não substitui avaliação clínica, imagem, nem protocolo institucional. Se estiveres a usar em contexto real, valida com o protocolo da tua UCIP.
+      </div>
+    </div>
+
+    <!-- RIGHT: OUTPUT -->
+    <div class="card">
+      <h2>Resultado</h2>
+
+      <div class="box" id="statusBox">
+        <div class="pill">
+          <span class="badge" id="statusBadge">—</span>
+          <span class="k" id="statusMeta">Sem avaliação</span>
+        </div>
+        <div class="hr"></div>
+        <div class="small" id="statusSummary">Preenche dados e carrega em <span class="mono">Avaliar</span>.</div>
+      </div>
+
+      <div class="hr"></div>
+
+      <h2>Regras activadas (audit trail)</h2>
+      <div id="rulesFired" class="small">—</div>
+
+      <div class="hr"></div>
+
+      <h2>Plano sugerido</h2>
+      <div id="planOut" class="small">—</div>
+
+      <div class="hr"></div>
+
+      <h2>Checklist</h2>
+      <div id="checklistOut" class="small">—</div>
+
+      <div class="hr"></div>
+
+      <h2>Texto de registo (copiar)</h2>
+      <textarea id="noteOut" readonly placeholder="Após avaliar, aqui aparece um registo estruturado para copiar..."></textarea>
+
+      <div class="actions">
+        <button id="copyNote">Copiar registo</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* -------------------------
+   Pulmoniq — Pediatric ARM
+   Lógica: regras transparentes + protocolo parametrizável
+   Nota: thresholds default são “placeholders”; ajusta ao vosso protocolo local.
+------------------------- */
+
+const $ = (id)=>document.getElementById(id);
+
+function numOrNull(v){
+  if(v===undefined || v===null) return null;
+  const s = String(v).trim().replace(",",".");
+  if(!s) return null;
+  const n = Number(s);
+  return Number.isFinite(n) ? n : null;
+}
+
+function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+
+function showModeSpecific(){
+  const mode = $("mode").value;
+  $("obstRow").style.display = (mode==="obstructive") ? "grid" : "none";
+}
+
+$("mode").addEventListener("change", showModeSpecific);
+showModeSpecific();
+
+function collect(){
+  return {
+    mode: $("mode").value,
+    dx: $("dx").value.trim(),
+    weight: numOrNull($("weight").value),
+    age_m: numOrNull($("age_m").value),
+
+    fio2: numOrNull($("fio2").value),
+    spo2: numOrNull($("spo2").value),
+    etco2: numOrNull($("etco2").value),
+    paco2: numOrNull($("paco2").value),
+
+    map: numOrNull($("map").value),
+    vaso: $("vaso").value,
+
+    vent_mode: $("vent_mode").value,
+    peep: numOrNull($("peep").value),
+    pplat: numOrNull($("pplat").value),
+    pip: numOrNull($("pip").value),
+    vt_mlkg: numOrNull($("vt_mlkg").value),
+    compliance_hint: $("compliance_hint").value,
+
+    auto_peep: $("auto_peep").value,
+    bronchospasm: $("bronchospasm").value,
+
+    step_peep: numOrNull($("step_peep").value),
+    step_time: numOrNull($("step_time").value),
+    peep_max: numOrNull($("peep_max").value),
+    pplat_stop: numOrNull($("pplat_stop").value),
+    map_drop_stop: numOrNull($("map_drop_stop").value),
+    spo2_stop: numOrNull($("spo2_stop").value),
+
+    local_protocol: $("local_protocol").value.trim(),
+    air_leak: $("air_leak").value,
+    sedation: $("sedation").value,
+  };
+}
+
+function computeDerived(d){
+  const out = {...d};
+  // driving pressure only if pplat+peep
+  out.dp = (d.pplat!=null && d.peep!=null) ? (d.pplat - d.peep) : null;
+  return out;
+}
+
+function addRule(fired, level, title, detail){
+  fired.push({level, title, detail});
+}
+
+function levelScore(level){
+  if(level==="bad") return 3;
+  if(level==="warn") return 2;
+  if(level==="info") return 1;
+  return 0;
+}
+
+function renderRules(fired){
+  if(!fired.length) return "—";
+  const order = {bad:0,warn:1,info:2,ok:3};
+  fired.sort((a,b)=>(order[a.level]??9)-(order[b.level]??9));
+  return fired.map(r=>{
+    const c = r.level==="bad" ? "bad" : (r.level==="warn" ? "warn" : "good");
+    const tag = r.level.toUpperCase();
+    const det = r.detail ? `<div class="small" style="color:var(--muted);margin-top:4px">${escapeHtml(r.detail)}</div>` : "";
+    return `<div class="tag"><b class="${c}">${tag}</b> ${escapeHtml(r.title)}</div>${det}`;
+  }).join("");
+}
+
+function escapeHtml(s){
+  return String(s)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+/* -------------------------
+   CORE DECISION LOGIC
+------------------------- */
+
+function evaluateRecruitable(d){
+  const fired = [];
+  let benefit = 0;
+  let risk = 0;
+
+  // Minimum data sanity
+  if(d.peep==null) addRule(fired,"warn","PEEP não preenchida","Sem PEEP actual não dá para gerar steps com base no estado actual.");
+  if(d.map==null) addRule(fired,"warn","MAP/PAM não preenchida","Sem hemodinâmica não dá para avaliar tolerância.");
+  if(d.spo2==null || d.fio2==null) addRule(fired,"warn","Oxigenação incompleta","Ideal: FiO₂ e SpO₂.");
+
+  // Hard stops / high-risk flags
+  if(d.air_leak==="yes"){
+    addRule(fired,"bad","Risco de fuga aérea / pneumotórax não drenado","ARM/pressões elevadas podem ser perigosas; reavaliar antes de considerar.");
+    risk += 4;
+  }
+  if(d.vaso==="yes"){
+    addRule(fired,"warn","Vasoactivos em escalada","ARM pode descompensar hemodinâmica; optimizar perfusão e monitorização.");
+    risk += 2;
+  }
+  if(d.sedation==="no"){
+    addRule(fired,"warn","Sedação/sincronia não optimizadas","ARM stepwise tende a falhar/ser insegura com asincronia.");
+    risk += 2;
+  }
+
+  // Mechanics hints
+  if(d.dp!=null){
+    if(d.dp >= 16){
+      addRule(fired,"warn","Driving pressure elevado (placeholder)","Se DP alto, risco de stress pulmonar; rever estratégia protetora.");
+      risk += 2;
+    } else {
+      addRule(fired,"info","Driving pressure disponível","DP = " + d.dp.toFixed(1) + " cmH₂O (Pplat-PEEP).");
+      benefit += 1;
+    }
+  }
+  if(d.compliance_hint==="improves_with_peep"){
+    addRule(fired,"info","Sugestão de recrutabilidade","Complacência melhora com ↑PEEP → pode haver colapso recrutável.");
+    benefit += 2;
+  }
+  if(d.compliance_hint==="worsens_with_peep"){
+    addRule(fired,"warn","Possível não-recrutável / hiperinsuflação","Complacência piora com ↑PEEP → benefício menor; risco maior.");
+    risk += 2;
+  }
+
+  // Hypoxemia severity heuristic (placeholders)
+  if(d.spo2!=null && d.fio2!=null){
+    if(d.spo2 < 88 && d.fio2 >= 0.6){
+      addRule(fired,"info","Hipoxemia relevante","SpO₂ baixa com FiO₂ alta sugere espaço para optimização (inclui considerar recrutamento).");
+      benefit += 2;
+    } else if(d.spo2 >= 92 && d.fio2 <= 0.4){
+      addRule(fired,"warn","Oxigenação já razoável","Potencial benefício de ARM pode ser baixo (depende do contexto).");
+      benefit += 0;
+      risk += 1;
+    }
+  }
+
+  // Determine status
+  const hardStop = fired.some(r=>r.level==="bad");
+  let status = "Cautela";
+  let cls = "warn";
+  if(hardStop){
+    status = "NÃO RECOMENDADO (hard stop)";
+    cls = "bad";
+  } else {
+    const score = benefit - risk;
+    if(score >= 2){ status = "Possível / Favorável (dependente do protocolo)"; cls = "good"; }
+    else if(score <= -2){ status = "Desfavorável (baixo benefício / alto risco)"; cls = "warn"; }
+    else { status = "Cautela (precisa de optimização/mais dados)"; cls = "warn"; }
+  }
+
+  const plan = buildRecruitablePlan(d, hardStop);
+  const checklist = buildRecruitableChecklist(d);
+  const note = buildNote(d, status, fired, plan.plain, checklist.plain);
+
+  return {status, cls, fired, plan, checklist, note};
+}
+
+function buildRecruitablePlan(d, hardStop){
+  // If hard stop, only guidance to defer
+  if(hardStop){
+    const html = `
+      <div class="badbox">
+        <b class="bad">Parar</b>: existem sinais que tornam ARM/pressões elevadas arriscadas.
+        <ul class="list">
+          <li>Reavaliar fuga aérea/pneumotórax, estabilidade hemodinâmica, e protocolo institucional.</li>
+          <li>Optimizar medidas básicas (posicionamento, aspiração, sincronia, estratégia protetora, monitorização).</li>
+        </ul>
+      </div>`;
+    return {html, plain: "Hard stop — não efectuar ARM; optimizar e reavaliar."};
+  }
+
+  // Build stepwise PEEP protocol parametrically (no clinical “default” imposed)
+  const peep0 = d.peep ?? 0;
+  const step = d.step_peep ?? null;
+  const t = d.step_time ?? null;
+  const peepMax = d.peep_max ?? null;
+
+  let stepsTxt = "Protocolo stepwise não gerado (faltam parâmetros).";
+  let stepsHtml = `<div class="warnbox"><b class="warn">Parâmetros insuficientes</b>: define Step PEEP / Tempo / PEEP máximo para gerar passos.</div>`;
+
+  if(step!=null && t!=null && peepMax!=null && d.peep!=null){
+    const stepN = Math.max(1, Math.round((peepMax - peep0)/step));
+    const steps = [];
+    for(let i=1;i<=stepN;i++){
+      const peepTarget = peep0 + i*step;
+      if(peepTarget > peepMax + 1e-9) break;
+      steps.push({i, peepTarget});
+    }
+
+    stepsHtml = `
+      <div class="okbox">
+        <b class="good">ARM stepwise (parametrizada)</b>
+        <ol class="list">
+          ${steps.map(s=>`<li>PEEP → <span class="mono">${s.peepTarget.toFixed(1)}</span> cmH₂O durante <span class="mono">${t}</span>s; reavaliar SpO₂, MAP, EtCO₂/ventilação, mecânica.</li>`).join("")}
+          <li>No fim: escolher “PEEP de manutenção” (titulação) conforme protocolo local e resposta (oxigenação/mecânica/DP) — documentar.</li>
+        </ol>
+        <div class="small" style="margin-top:8px;color:var(--muted)">
+          <b>Critérios de paragem</b> (dos teus inputs): SpO₂ &lt; ${d.spo2_stop ?? "—"}%,
+          queda MAP ≥ ${d.map_drop_stop ?? "—"} mmHg, Pplat ≥ ${d.pplat_stop ?? "—"} cmH₂O, ou sinais clínicos de intolerância.
+        </div>
+      </div>
+    `;
+
+    stepsTxt = steps.map(s=>`- PEEP ${s.peepTarget.toFixed(1)} cmH2O por ${t}s; reavaliar.`).join("\n")
+      + `\n- Titular PEEP de manutenção conforme resposta/protocolo local.\n- Parar se SpO2<${d.spo2_stop ?? "—"}%; queda MAP≥${d.map_drop_stop ?? "—"}; Pplat≥${d.pplat_stop ?? "—"}.`;
+  }
+
+  const protocolNote = d.local_protocol
+    ? `<div class="box" style="margin-top:10px"><b>Nota do protocolo local</b><div class="small" style="margin-top:6px;white-space:pre-wrap">${escapeHtml(d.local_protocol)}</div></div>`
+    : "";
+
+  const html = `
+    ${stepsHtml}
+    ${protocolNote}
+    <div class="box" style="margin-top:10px">
+      <b>Interpretação (regra geral)</b>
+      <ul class="list">
+        <li>ARM só “faz sentido” se houver recrutabilidade e tolerância hemodinâmica.</li>
+        <li>Se com ↑PEEP piora mecânica/ventilação ou hemodinâmica → reduzir e reavaliar.</li>
+      </ul>
+    </div>
+  `;
+
+  return {html, plain: stepsTxt};
+}
+
+function buildRecruitableChecklist(d){
+  const items = [
+    "Confirmar indicação e objectivo (oxigenação/mecânica) segundo protocolo local.",
+    "Avaliar risco de fuga aérea/pneumotórax; preparar resposta a deterioração.",
+    "Optimizar sincronia (sedação/analgesia; considerar bloqueio neuromuscular se protocolo assim o define).",
+    "Monitorização: SpO₂ contínua, PA/MAP (ideal invasiva), FC, EtCO₂; registar PEEP/Pplat/DP se disponíveis.",
+    "Definir critérios de paragem ANTES de iniciar (SpO₂ mínima, queda MAP, limite Pplat, sinais clínicos).",
+    "Após ARM: titulação para PEEP de manutenção e reavaliação em 5–15 min."
+  ];
+  const html = `<ul class="list">${items.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul>`;
+  return {html, plain: items.map(x=>`- ${x}`).join("\n")};
+}
+
+function evaluateObstructive(d){
+  const fired = [];
+  let risk = 0;
+
+  // Obstructive = avoid classic ARM
+  addRule(fired,"info","Modo Obstrutivo","ARM clássica (↑pressões/↑PEEP para recrutar) tende a ser inadequada quando o problema dominante é hiperinsuflação dinâmica.");
+
+  if(d.bronchospasm==="yes"){
+    addRule(fired,"warn","Broncoespasmo dominante","Prioridade: reduzir hiperinsuflação/auto-PEEP e melhorar expiração; risco com pressões elevadas.");
+    risk += 2;
+  }
+  if(d.auto_peep==="yes"){
+    addRule(fired,"warn","Auto-PEEP presente/suspeita","Evitar estratégias que aumentem aprisionamento; reavaliar tempos expiratórios e RR.");
+    risk += 2;
+  }
+  if(d.air_leak==="yes"){
+    addRule(fired,"bad","Risco de fuga aérea / pneumotórax não drenado","Em obstrutivo, hiperinsuflação + pressões elevadas aumentam risco.");
+    risk += 4;
+  }
+  if(d.vaso==="yes"){
+    addRule(fired,"warn","Vasoactivos em escalada","Hiperinsuflação aumenta pressão intratorácica e pode piorar retorno venoso.");
+    risk += 1;
+  }
+
+  let status = "Estratégia Obstrutiva (sem ARM)";
+  let cls = "warn";
+  if(fired.some(r=>r.level==="bad")){
+    status = "ALTO RISCO — evitar escalada de pressões; estabilizar primeiro";
+    cls = "bad";
+  } else if(risk>=3){
+    status = "Cautela elevada — foco anti-auto-PEEP / reversão de hiperinsuflação";
+    cls = "warn";
+  } else {
+    cls = "good";
+    status = "Sem ARM — medidas estruturadas anti-auto-PEEP";
+  }
+
+  const plan = buildObstructivePlan(d);
+  const checklist = buildObstructiveChecklist(d);
+  const note = buildNote(d, status, fired, plan.plain, checklist.plain);
+
+  return {status, cls, fired, plan, checklist, note};
+}
+
+function buildObstructivePlan(d){
+  // Deliberately avoid giving exact ventilator settings; provide structured decision-support prompts.
+  const html = `
+    <div class="warnbox">
+      <b class="warn">Sem ARM clássica</b>. Em obstrutivo, o alvo típico é <b>reduzir hiperinsuflação dinâmica</b> e <b>melhorar expiração</b> (conforme protocolo local).
+      <ul class="list">
+        <li>Confirmar padrão obstrutivo e excluir causas alternativas (secreções, tubo, pneumotórax).</li>
+        <li>Rever ciclo ventilatório: evitar empilhamento; garantir tempo expiratório adequado.</li>
+        <li>Monitorizar sinais indiretos de hiperinsuflação: piora hemodinâmica com ↑pressão, capnografia, dificuldade em esvaziar.</li>
+        <li>Se colapso coexistente: PEEP externa pode ser considerada apenas sob protocolo e com vigilância de auto-PEEP.</li>
+      </ul>
+    </div>
+    ${d.local_protocol ? `<div class="box" style="margin-top:10px"><b>Nota do protocolo local</b><div class="small" style="margin-top:6px;white-space:pre-wrap">${escapeHtml(d.local_protocol)}</div></div>` : ""}
+    <div class="box" style="margin-top:10px">
+      <b>Critérios de paragem (sempre)</b>
+      <div class="small" style="margin-top:6px;color:var(--muted)">
+        Deterioração hemodinâmica, queda SpO₂ sustentada, sinais de fuga aérea, ou piora rápida da ventilação/pressões.
+      </div>
+    </div>
+  `;
+  const plain =
+`Sem ARM clássica. Plano (alto nível):
+- Confirmar padrão obstrutivo; excluir tubo/secreções/pneumotórax.
+- Optimizar expiração e evitar empilhamento (conforme protocolo local).
+- Vigiar auto-PEEP/hiperinsuflação e tolerância hemodinâmica.
+- Considerar PEEP externa apenas se indicado e sob protocolo, com cautela.`;
+  return {html, plain};
+}
+
+function buildObstructiveChecklist(d){
+  const items = [
+    "Confirmar obstrução dominante (clínica/capnografia/pressões) e excluir problemas mecânicos (tubo, secreções).",
+    "Monitorização apertada: MAP/PA, SpO₂, EtCO₂, sinais de hiperinsuflação/auto-PEEP.",
+    "Evitar aumento acrítico de PEEP/pressões se auto-PEEP/hiperinsuflação provável.",
+    "Documentar resposta a alterações (oxigenação, ventilação, hemodinâmica) e reverter se piorar.",
+    "Seguir protocolo institucional e envolver equipa sénior quando instável."
+  ];
+  const html = `<ul class="list">${items.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul>`;
+  return {html, plain: items.map(x=>`- ${x}`).join("\n")};
+}
+
+/* -------------------------
+   Note builder + rendering
+------------------------- */
+
+function buildNote(d, status, fired, planPlain, checklistPlain){
+  const now = new Date();
+  const stamp = now.toISOString().slice(0,19).replace("T"," ");
+  const firedTxt = fired.map(r=>`- [${r.level.toUpperCase()}] ${r.title}${r.detail ? " — " + r.detail : ""}`).join("\n");
+
+  return `Pulmoniq — Pediatric ARM (educacional) | ${stamp}
+Modo: ${d.mode==="recruitable" ? "Recrutável (ARDS/atelectasia)" : "Obstrutivo (asma/bronquiolite)"}
+Dx/Nota: ${d.dx || "—"}
+
+Dados:
+- Peso: ${d.weight ?? "—"} kg | Idade: ${d.age_m ?? "—"} meses
+- FiO2: ${d.fio2 ?? "—"} | SpO2: ${d.spo2 ?? "—"}%
+- EtCO2: ${d.etco2 ?? "—"} | PaCO2: ${d.paco2 ?? "—"}
+- MAP: ${d.map ?? "—"} mmHg | Vasoactivos em escalada: ${d.vaso}
+- Vent: ${d.vent_mode} | PEEP: ${d.peep ?? "—"} | Pplat: ${d.pplat ?? "—"} | PIP: ${d.pip ?? "—"} | Vt: ${d.vt_mlkg ?? "—"} mL/kg
+- DP (Pplat-PEEP): ${d.dp ?? "—"}
+
+Resultado: ${status}
+
+Regras activadas:
+${firedTxt || "—"}
+
+Plano:
+${planPlain || "—"}
+
+Checklist:
+${checklistPlain || "—"}
+
+Nota protocolo local:
+${d.local_protocol || "—"}
+`;
+}
+
+function renderResult(res, d){
+  $("statusBadge").textContent = res.status;
+  $("statusBadge").className = "badge " + (res.cls==="good"?"good":res.cls==="bad"?"bad":"warn");
+
+  const meta = [];
+  if(d.dp!=null) meta.push(`DP ${d.dp.toFixed(1)}`);
+  if(d.pplat!=null) meta.push(`Pplat ${d.pplat}`);
+  if(d.peep!=null) meta.push(`PEEP ${d.peep}`);
+  if(d.map!=null) meta.push(`MAP ${d.map}`);
+  $("statusMeta").textContent = meta.length ? meta.join(" · ") : "—";
+
+  const summary = (d.mode==="recruitable")
+    ? "Resultado baseado em regras explícitas (recrutabilidade vs risco). Protocolo stepwise gerado apenas se os parâmetros estiverem definidos."
+    : "Modo obstrutivo: a app orienta para estratégia anti-auto-PEEP; não sugere ARM clássica.";
+  $("statusSummary").textContent = summary;
+
+  $("rulesFired").innerHTML = renderRules(res.fired);
+  $("planOut").innerHTML = res.plan.html;
+  $("checklistOut").innerHTML = res.checklist.html;
+  $("noteOut").value = res.note;
+}
+
+function run(){
+  const raw = collect();
+  const d = computeDerived(raw);
+
+  if(d.mode==="recruitable"){
+    const res = evaluateRecruitable(d);
+    renderResult(res, d);
+  } else {
+    const res = evaluateObstructive(d);
+    renderResult(res, d);
+  }
+}
+
+$("runBtn").addEventListener("click", run);
+
+$("copyNote").addEventListener("click", async ()=>{
+  const txt = $("noteOut").value || "";
+  try{
+    await navigator.clipboard.writeText(txt);
+    $("copyNote").textContent = "Copiado ✓";
+    setTimeout(()=>$("copyNote").textContent="Copiar registo", 1200);
+  }catch(e){
+    alert("Não foi possível copiar automaticamente. Selecciona o texto e copia manualmente.");
+  }
+});
+
+$("clearBtn").addEventListener("click", ()=>{
+  // reset inputs (simple)
+  ["dx","weight","age_m","fio2","spo2","etco2","paco2","map","peep","pplat","pip","vt_mlkg",
+   "step_peep","step_time","peep_max","pplat_stop","map_drop_stop","spo2_stop","local_protocol"].forEach(id=>$(id).value="");
+  ["vaso","vent_mode","compliance_hint","air_leak","sedation","auto_peep","bronchospasm"].forEach(id=>$(id).selectedIndex=0);
+  $("mode").value="recruitable";
+  showModeSpecific();
+  $("statusBadge").textContent="—";
+  $("statusBadge").className="badge";
+  $("statusMeta").textContent="Sem avaliação";
+  $("statusSummary").textContent="Preenche dados e carrega em Avaliar.";
+  $("rulesFired").textContent="—";
+  $("planOut").textContent="—";
+  $("checklistOut").textContent="—";
+  $("noteOut").value="";
+});
+
+$("fillRecruit").addEventListener("click", ()=>{
+  $("mode").value="recruitable";
+  showModeSpecific();
+  $("dx").value="ARDS / atelectasia (exemplo)";
+  $("weight").value="12";
+  $("age_m").value="24";
+  $("fio2").value="0.70";
+  $("spo2").value="88";
+  $("map").value="55";
+  $("vaso").value="no";
+  $("vent_mode").value="PC";
+  $("peep").value="8";
+  $("pplat").value="24";
+  $("pip").value="30";
+  $("vt_mlkg").value="6";
+  $("compliance_hint").value="improves_with_peep";
+  $("air_leak").value="no";
+  $("sedation").value="yes";
+
+  // Protocol params (placeholders — ajusta ao vosso)
+  $("step_peep").value="2";
+  $("step_time").value="60";
+  $("peep_max").value="16";
+  $("pplat_stop").value="28";
+  $("map_drop_stop").value="10";
+  $("spo2_stop").value="85";
+  $("local_protocol").value="(Cole aqui o protocolo institucional da UCIP.)";
+});
+
+$("fillObst").addEventListener("click", ()=>{
+  $("mode").value="obstructive";
+  showModeSpecific();
+  $("dx").value="Asma grave (exemplo)";
+  $("weight").value="18";
+  $("age_m").value="96";
+  $("fio2").value="0.40";
+  $("spo2").value="92";
+  $("etco2").value="65";
+  $("map").value="60";
+  $("vaso").value="no";
+  $("vent_mode").value="PC";
+  $("peep").value="5";
+  $("pip").value="32";
+  $("pplat").value="—";
+  $("vt_mlkg").value="";
+  $("compliance_hint").value="unknown";
+  $("auto_peep").value="yes";
+  $("bronchospasm").value="yes";
+  $("air_leak").value="unknown";
+  $("sedation").value="yes";
+  $("local_protocol").value="(Cole aqui o protocolo institucional para doente obstrutivo/auto-PEEP.)";
+
+  // Protocol params can remain blank; not needed for obstructive mode
+});
+
+// PWA: register service worker
+if("serviceWorker" in navigator){
+  window.addEventListener("load", ()=>{
+    navigator.serviceWorker.register("./sw.js").catch(()=>{});
+  });
+}
+</script>
+
+</body>
+</html>
