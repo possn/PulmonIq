@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
   <title>Pulmoniq — Pediatric ARM</title>
-  <meta name="description" content="Pulmoniq — Pediatric ARM. Apoio à decisão (educacional) para recrutamento alveolar em pediatria, com modo recrutável e modo obstrutivo."/>
+  <meta name="description" content="Pulmoniq — Pediatric ARM. Apoio à decisão (educacional) para recrutamento alveolar em pediatria.">
   <meta name="theme-color" content="#0b1220"/>
 
   <!-- PWA -->
@@ -21,58 +21,60 @@
       --line:#263554; --text:#e7eefc; --muted:#8aa0c2; --chip:#172341; --btn:#1f2f52;
       --good:#34d399; --warn:#fbbf24; --bad:#fb7185;
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
     }
     *{box-sizing:border-box}
     body{margin:0;background:linear-gradient(180deg,var(--bg1),var(--bg2));color:var(--text);font-family:var(--sans)}
-    .wrap{max-width:1220px;margin:0 auto;padding:18px}
-    header{display:flex;align-items:center;gap:14px;margin-bottom:14px}
-    header img{width:56px;height:56px;border-radius:14px;object-fit:cover;background:#0f172a;border:1px solid var(--line)}
+    .wrap{max-width:1220px;margin:0 auto;padding:16px}
+    header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+    header img{width:54px;height:54px;border-radius:14px;border:1px solid var(--line);object-fit:cover;background:#0f172a}
     h1{font-size:18px;margin:0}
-    .sub{color:var(--muted);font-size:13px;margin-top:2px;line-height:1.3}
-    .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:14px}
+    .sub{color:var(--muted);font-size:13px;margin-top:2px;line-height:1.25}
+    .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:12px}
     @media (max-width:980px){.grid{grid-template-columns:1fr}}
     .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px}
-    .card h2{margin:0 0 10px;font-size:14px}
     .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    @media (max-width:560px){.row{grid-template-columns:1fr}}
-    label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px}
+    @media (max-width:620px){.row{grid-template-columns:1fr}}
+    label{display:block;color:var(--muted);font-size:12px;margin:0 0 6px}
     input,select,textarea{
       width:100%;padding:10px;border-radius:12px;border:1px solid var(--line);
       background:#0c162d;color:var(--text);outline:none
     }
-    input::placeholder, textarea::placeholder{color:#6f86ab}
-    textarea{min-height:90px;resize:vertical}
-    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    textarea{min-height:88px;resize:vertical}
     button{background:var(--btn);border:1px solid var(--line);color:var(--text);padding:10px 12px;border-radius:12px;cursor:pointer}
     button:hover{filter:brightness(1.07)}
-    .pill{display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border-radius:999px;border:1px solid var(--line);background:var(--chip);font-size:12px}
-    .k{font-family:var(--mono);font-size:12px;color:#cfe2ff}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    .pill{display:inline-flex;gap:8px;align-items:center;padding:7px 10px;border-radius:999px;border:1px solid var(--line);background:var(--chip);font-size:12px}
     .badge{font-weight:900}
     .good{color:var(--good)} .warn{color:var(--warn)} .bad{color:var(--bad)}
     .hr{height:1px;background:var(--line);margin:12px 0}
-    .small{font-size:12px;color:var(--muted);line-height:1.4}
+    .small{font-size:12px;color:var(--muted);line-height:1.45}
     .mono{font-family:var(--mono)}
-    .list{margin:8px 0 0 18px;color:#d9e6ff}
-    .list li{margin:4px 0}
     .box{border:1px solid var(--line);background:#0b1732;border-radius:14px;padding:10px}
+    .tag{display:inline-block;margin:0 6px 6px 0;padding:5px 8px;border-radius:999px;border:1px solid var(--line);background:#0b1732;font-size:12px}
+    .okbox{border:1px solid rgba(52,211,153,.45);background:rgba(52,211,153,.08);border-radius:14px;padding:10px}
     .warnbox{border:1px solid rgba(251,191,36,.45);background:rgba(251,191,36,.08);border-radius:14px;padding:10px}
     .badbox{border:1px solid rgba(251,113,133,.55);background:rgba(251,113,133,.10);border-radius:14px;padding:10px}
-    .okbox{border:1px solid rgba(52,211,153,.45);background:rgba(52,211,153,.08);border-radius:14px;padding:10px}
-    .tag{display:inline-block;padding:5px 8px;border-radius:999px;border:1px solid var(--line);background:#0b1732;font-size:12px;margin:0 6px 6px 0}
+    .list{margin:8px 0 0 18px;color:#d9e6ff}
+    .list li{margin:4px 0}
     canvas{width:100%;height:220px;border-radius:14px;border:1px solid var(--line);background:#0b1732}
 
     /* Tabs */
-    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .tabs{display:flex;gap:8px;flex-wrap:wrap}
     .tabbtn{padding:8px 10px;border-radius:12px;border:1px solid var(--line);background:#0b1732;color:var(--text);cursor:pointer}
     .tabbtn.active{background:var(--btn)}
     .tab{display:none}
     .tab.active{display:block}
-    .flowbox{border:1px dashed rgba(231,238,252,.25);border-radius:14px;padding:10px;background:rgba(11,23,50,.55)}
-    .flowstep{margin:8px 0;padding:10px;border-radius:12px;border:1px solid var(--line);background:#0c162d}
-    .flowarrow{color:rgba(231,238,252,.6);text-align:center;margin:6px 0}
-    .cb{display:flex;gap:8px;align-items:center;margin-top:8px}
+    .cb{display:flex;gap:8px;align-items:center;margin-top:6px}
     .cb input{width:18px;height:18px}
+
+    /* Print */
+    @media print{
+      body{background:#fff;color:#000}
+      .card{background:#fff;border:1px solid #ddd}
+      button,.tabs{display:none !important}
+      textarea{border:1px solid #ddd}
+    }
   </style>
 </head>
 
@@ -82,38 +84,36 @@
     <img src="assets/logo.png.PNG" alt="Pulmoniq logo">
     <div>
       <h1>Pulmoniq</h1>
-      <div class="sub">Pediatric ARM · Tabs: Cálculo / Manual / Fluxograma · Sugestão de protocolo (com validação sénior) · Audit trail · PDF</div>
+      <div class="sub">Pediatric ARM · Cálculo / Manual / Fluxograma · Sugestão automática de protocolo · Alvos: DP≤15 e Pplat≤28 (soft) · PDF · PWA</div>
     </div>
   </header>
 
   <div class="grid">
-    <!-- LEFT: INPUTS -->
+    <!-- INPUTS -->
     <div class="card">
-      <h2>Dados</h2>
+      <h2 style="margin:0 0 10px;font-size:14px">Dados clínicos e ventilatórios</h2>
 
       <div class="row">
         <div>
           <label>Modo</label>
           <select id="mode">
-            <option value="recruitable">Recrutável (ARDS / atelectasia) — ARM stepwise</option>
-            <option value="obstructive">Obstrutivo (asma / bronquiolite) — sem ARM clássica</option>
+            <option value="recruitable">Recrutável (ARDS/atelectasia) — ARM stepwise</option>
+            <option value="obstructive">Obstrutivo (asma/bronquiolite) — sem ARM clássica</option>
           </select>
         </div>
         <div>
           <label>Preset</label>
-          <select id="preset"></select>
+          <select id="preset">
+            <option value="ucip_default">UCIP (default)</option>
+            <option value="ards">ARDS (mais agressivo, mantendo prudência)</option>
+            <option value="hemo_fragile">Hemodinâmica frágil</option>
+          </select>
         </div>
       </div>
 
       <div class="row">
-        <div>
-          <label>Diagnóstico / nota rápida</label>
-          <input id="dx" placeholder="ex.: ARDS moderado; atelectasia pós-op; asma grave...">
-        </div>
-        <div>
-          <label>Objectivo</label>
-          <input id="goal" placeholder="ex.: melhorar oxigenação / reduzir DP / melhorar mecânica...">
-        </div>
+        <div><label>Diagnóstico / nota</label><input id="dx" placeholder="ex.: ARDS moderado; atelectasia pós-op..."></div>
+        <div><label>Objectivo</label><input id="goal" placeholder="ex.: melhorar oxigenação; reduzir DP..."></div>
       </div>
 
       <div class="hr"></div>
@@ -136,8 +136,11 @@
       <div class="row">
         <div><label>MAP/PAM (mmHg)</label><input id="map" inputmode="decimal" placeholder="ex.: 55"></div>
         <div>
-          <label>Vasoactivos em escalada? (sim/não)</label>
-          <select id="vaso"><option value="no">não</option><option value="yes">sim</option></select>
+          <label>Vasoactivos em escalada?</label>
+          <select id="vaso">
+            <option value="no">não</option>
+            <option value="yes">sim</option>
+          </select>
         </div>
       </div>
 
@@ -161,18 +164,18 @@
       <div class="row">
         <div><label>Vt (mL/kg) (opcional)</label><input id="vt_mlkg" inputmode="decimal" placeholder="ex.: 6"></div>
         <div>
-          <label>Complacência (tendência)</label>
+          <label>Tendência de complacência com ↑PEEP</label>
           <select id="compliance_hint">
-            <option value="unknown">desconhecido</option>
-            <option value="improves_with_peep">melhora quando ↑ PEEP</option>
-            <option value="worsens_with_peep">piora quando ↑ PEEP</option>
+            <option value="unknown">desconhecida</option>
+            <option value="improves">melhora</option>
+            <option value="worsens">piora</option>
           </select>
         </div>
       </div>
 
       <div class="row" id="obstRow" style="display:none">
         <div>
-          <label>Auto-PEEP?</label>
+          <label>Auto-PEEP provável/medida?</label>
           <select id="auto_peep">
             <option value="unknown">desconhecido</option>
             <option value="no">não</option>
@@ -191,7 +194,8 @@
 
       <div class="hr"></div>
 
-      <h2>Segurança e validação</h2>
+      <h2 style="margin:0 0 10px;font-size:14px">Segurança e validação</h2>
+
       <div class="row">
         <div>
           <label>Fuga aérea / pneumotórax não drenado?</label>
@@ -202,48 +206,47 @@
           </select>
         </div>
         <div>
-          <label>Sedação/sincronia adequadas?</label>
+          <label>Sedação/sincronia adequada?</label>
           <select id="sedation">
             <option value="unknown">desconhecido</option>
-            <option value="no">não</option>
             <option value="yes">sim</option>
+            <option value="no">não</option>
           </select>
         </div>
       </div>
 
       <div class="row">
         <div>
-          <label>Validação sénior (obrigatório para “executável”)</label>
+          <label>Validação sénior (para “executável”)</label>
           <div class="cb">
             <input type="checkbox" id="senior_ok">
             <span class="small">Validado por mim (sénior responsável)</span>
           </div>
         </div>
         <div>
-          <label>Notas locais (protocolo institucional)</label>
-          <textarea id="local_protocol" placeholder="Cole aqui notas/protocolo local (opcional)."></textarea>
+          <label>Protocolo/Notas locais (opcional)</label>
+          <textarea id="local_protocol" placeholder="Cole notas do vosso protocolo institucional..."></textarea>
         </div>
       </div>
 
       <div class="hr"></div>
 
-      <h2>Parâmetros (opcionais) — se não preencheres, o Pulmoniq sugere</h2>
+      <h2 style="margin:0 0 10px;font-size:14px">Parâmetros do ARM (opcional)</h2>
       <div class="small">
-        Em modo <span class="mono">Recrutável</span>, se deixares vazio, a app sugere stepwise (editável) com base nos dados.
-        Em modo <span class="mono">Obstrutivo</span>, não gera ARM clássica.
+        Se deixares em branco, a app sugere (editável). Os alvos UCIP (DP≤15, Pplat≤28) são <b>soft</b>: avisam e ajustam risco, mas não proíbem.
       </div>
 
       <div class="row">
-        <div><label>Step PEEP (cmH₂O)</label><input id="step_peep" inputmode="decimal" placeholder="vazio = sugestão"></div>
-        <div><label>Tempo por step (seg)</label><input id="step_time" inputmode="numeric" placeholder="vazio = sugestão"></div>
+        <div><label>Step PEEP (cmH₂O)</label><input id="step_peep" inputmode="decimal" placeholder="vazio = sugerido"></div>
+        <div><label>Tempo por step (seg)</label><input id="step_time" inputmode="numeric" placeholder="vazio = sugerido"></div>
       </div>
       <div class="row">
-        <div><label>PEEP máximo (cmH₂O)</label><input id="peep_max" inputmode="decimal" placeholder="vazio = sugestão"></div>
-        <div><label>Stop Pplat (cmH₂O)</label><input id="pplat_stop" inputmode="decimal" placeholder="vazio = sugestão"></div>
+        <div><label>PEEP máximo (cmH₂O)</label><input id="peep_max" inputmode="decimal" placeholder="vazio = sugerido"></div>
+        <div><label>Stop SpO₂ mínima (%)</label><input id="spo2_stop" inputmode="decimal" placeholder="vazio = sugerido"></div>
       </div>
       <div class="row">
-        <div><label>Stop queda MAP (mmHg)</label><input id="map_drop_stop" inputmode="decimal" placeholder="vazio = sugestão"></div>
-        <div><label>Stop SpO₂ mínima (%)</label><input id="spo2_stop" inputmode="decimal" placeholder="vazio = sugestão"></div>
+        <div><label>Stop queda MAP (mmHg)</label><input id="map_drop_stop" inputmode="decimal" placeholder="vazio = sugerido"></div>
+        <div><label>Stop Pplat (cmH₂O)</label><input id="pplat_stop" inputmode="decimal" placeholder="vazio = sugerido"></div>
       </div>
 
       <div class="actions">
@@ -254,18 +257,18 @@
       </div>
 
       <div class="small" style="margin-top:10px">
-        Esta ferramenta é <b>apoio à decisão/educacional</b>. A execução deve seguir <b>protocolo institucional</b> e validação do sénior.
+        Ferramenta educacional. A execução deve ser confirmada por protocolo institucional e responsável clínico.
       </div>
     </div>
 
-    <!-- RIGHT: OUTPUT + TABS -->
+    <!-- OUTPUT -->
     <div class="card">
-      <h2>Saída</h2>
+      <h2 style="margin:0 0 10px;font-size:14px">Resultado</h2>
 
       <div class="box">
         <div class="pill">
           <span class="badge" id="statusBadge">—</span>
-          <span class="k" id="statusMeta">Sem avaliação</span>
+          <span class="mono" id="statusMeta">Sem avaliação</span>
         </div>
         <div class="hr"></div>
         <div class="small" id="statusSummary">Preenche e carrega em <span class="mono">Avaliar</span>.</div>
@@ -274,55 +277,53 @@
       <div class="hr"></div>
 
       <div class="tabs">
-        <button class="tabbtn active" data-tab="calcTab">Cálculo</button>
-        <button class="tabbtn" data-tab="manualTab">Manual</button>
-        <button class="tabbtn" data-tab="flowTab">Fluxograma</button>
+        <button class="tabbtn active" data-tab="tabCalc">Cálculo</button>
+        <button class="tabbtn" data-tab="tabManual">Manual</button>
+        <button class="tabbtn" data-tab="tabFlow">Fluxograma</button>
       </div>
 
-      <!-- TAB: CÁLCULO -->
-      <div class="tab active" id="calcTab">
+      <div class="tab active" id="tabCalc">
         <div class="hr"></div>
-        <h2>Regras activadas (audit trail)</h2>
-        <div id="rulesFired" class="small">—</div>
+        <h2 style="margin:0 0 10px;font-size:14px">Regras activadas (audit trail)</h2>
+        <div id="rulesOut" class="small">—</div>
 
         <div class="hr"></div>
-        <h2>Métricas</h2>
+        <h2 style="margin:0 0 10px;font-size:14px">Métricas</h2>
         <div class="box small" id="metricsOut">—</div>
 
         <div class="hr"></div>
-        <h2>Sugestão de protocolo (parâmetros + passos)</h2>
+        <h2 style="margin:0 0 10px;font-size:14px">Sugestão de protocolo</h2>
         <div id="protocolOut" class="small">—</div>
 
         <div class="hr"></div>
-        <h2>Mini-gráfico (sequência PEEP)</h2>
-        <canvas id="peepChart" width="900" height="260"></canvas>
-        <div class="small" style="margin-top:6px">Visualiza a sequência sugerida/definida.</div>
+        <h2 style="margin:0 0 10px;font-size:14px">Mini-gráfico (sequência PEEP)</h2>
+        <canvas id="chart" width="900" height="260"></canvas>
+        <div class="small" style="margin-top:6px">Só visualização da sequência sugerida/definida.</div>
       </div>
 
-      <!-- TAB: MANUAL -->
-      <div class="tab" id="manualTab">
+      <div class="tab" id="tabManual">
         <div class="hr"></div>
-        <h2>Guia passo-a-passo</h2>
-        <div id="guideOut" class="small">—</div>
+        <h2 style="margin:0 0 10px;font-size:14px">Guia passo-a-passo</h2>
+        <div id="manualOut" class="small">—</div>
 
         <div class="hr"></div>
-        <h2>Checklist</h2>
-        <div id="checklistOut" class="small">—</div>
+        <h2 style="margin:0 0 10px;font-size:14px">Checklist</h2>
+        <div id="checkOut" class="small">—</div>
       </div>
 
-      <!-- TAB: FLUXOGRAMA -->
-      <div class="tab" id="flowTab">
+      <div class="tab" id="tabFlow">
         <div class="hr"></div>
-        <h2>Fluxograma (decisão)</h2>
+        <h2 style="margin:0 0 10px;font-size:14px">Fluxograma</h2>
         <div id="flowOut" class="small">—</div>
       </div>
 
       <div class="hr"></div>
 
-      <h2>Registo</h2>
-      <textarea id="noteOut" readonly placeholder="Aqui aparece o registo estruturado..."></textarea>
+      <h2 style="margin:0 0 10px;font-size:14px">Registo</h2>
+      <textarea id="noteOut" readonly placeholder="Após avaliar, aparece um registo estruturado..."></textarea>
+
       <div class="actions">
-        <button id="copyNote">Copiar registo</button>
+        <button id="copyBtn">Copiar registo</button>
         <button id="pdfBtn">Gerar PDF</button>
       </div>
     </div>
@@ -330,695 +331,551 @@
 </div>
 
 <script>
-/* =========================
-   Pulmoniq — Pediatric ARM
-   Tabs + decisão + protocolo sugerido + manual + fluxograma
-   NOTA: thresholds “default” são conservadores e editáveis (e devem alinhar com o vosso protocolo local).
-========================= */
-
-const $ = (id)=>document.getElementById(id);
-const $$ = (q)=>document.querySelectorAll(q);
-
-function numOrNull(v){
-  if(v===undefined || v===null) return null;
-  const s = String(v).trim().replace(",",".");
-  if(!s || s==="—") return null;
-  const n = Number(s);
-  return Number.isFinite(n) ? n : null;
-}
-function escapeHtml(s){
-  return String(s)
-    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;").replaceAll("'","&#039;");
-}
-
-/* --------- Tabs --------- */
-$$(".tabbtn").forEach(btn=>{
+/* ========= TABS ========= */
+document.querySelectorAll(".tabbtn").forEach(btn=>{
   btn.addEventListener("click", ()=>{
-    $$(".tabbtn").forEach(b=>b.classList.remove("active"));
-    $$(".tab").forEach(t=>t.classList.remove("active"));
+    document.querySelectorAll(".tabbtn").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
     btn.classList.add("active");
-    $(btn.dataset.tab).classList.add("active");
+    document.getElementById(btn.dataset.tab).classList.add("active");
   });
 });
 
-/* --------- Mode UI --------- */
-function showModeSpecific(){
+/* ========= HELPERS ========= */
+const $ = (id)=>document.getElementById(id);
+function n(v){
+  if(v===null || v===undefined) return null;
+  const s = String(v).trim().replace(",",".");
+  if(!s) return null;
+  const x = Number(s);
+  return Number.isFinite(x) ? x : null;
+}
+function esc(s){
+  return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+}
+function showMode(){
   $("obstRow").style.display = ($("mode").value==="obstructive") ? "grid" : "none";
 }
-$("mode").addEventListener("change", ()=>{
-  showModeSpecific();
-  refreshPresetList();
-  applyPreset();
-});
-showModeSpecific();
+$("mode").addEventListener("change", showMode);
+showMode();
 
-/* --------- Presets --------- */
-const PRESETS = {
-  recruitable: [
-    { id:"ards_generic", name:"ARDS (genérico)", fill:{}, paramsHint:{} },
-    { id:"atelectasis_postop", name:"Atelectasia pós-op", fill:{}, paramsHint:{} }
-  ],
-  obstructive: [
-    { id:"asthma", name:"Asma grave", fill:{}, paramsHint:{} },
-    { id:"bronchiolitis", name:"Bronquiolite", fill:{}, paramsHint:{} }
-  ]
-};
+/* ========= UCIP: ALVOS SOFT ========= */
+const UCIP_PPLAT_TARGET = 28;   // alvo (soft)
+const UCIP_DP_TARGET = 15;      // alvo (soft)
+const PPLAT_SOFT_HIGH = 32;     // risco sobe mais acima daqui
+const DP_SOFT_HIGH = 18;
 
-function refreshPresetList(){
-  const mode = $("mode").value;
-  const sel = $("preset");
-  sel.innerHTML = "";
-  PRESETS[mode].forEach(p=>{
-    const opt=document.createElement("option");
-    opt.value=p.id; opt.textContent=p.name;
-    sel.appendChild(opt);
-  });
+/* ========= PRESETS ========= */
+function getPreset(){
+  const p = $("preset").value;
+  let base = { step_peep:2, step_time:60, peep_max:16, spo2_stop:85, map_drop_stop:10, pplat_stop:34 };
+  if(p==="ards") base = { step_peep:2, step_time:60, peep_max:18, spo2_stop:82, map_drop_stop:10, pplat_stop:34 };
+  if(p==="hemo_fragile") base = { step_peep:2, step_time:60, peep_max:14, spo2_stop:85, map_drop_stop:8, pplat_stop:32 };
+  return base;
 }
-refreshPresetList();
-function applyPreset(){
-  // aqui podes expandir com autofill futuro; por agora não mexe nos dados
-}
-$("preset").addEventListener("change", applyPreset);
 
-/* --------- Data --------- */
+/* ========= DATA ========= */
 function collect(){
   return {
     mode: $("mode").value,
     preset: $("preset").value,
     dx: $("dx").value.trim(),
     goal: $("goal").value.trim(),
-
-    weight: numOrNull($("weight").value),
-    age_m: numOrNull($("age_m").value),
-
-    fio2: numOrNull($("fio2").value),
-    spo2: numOrNull($("spo2").value),
-    pao2: numOrNull($("pao2").value),
-    paco2: numOrNull($("paco2").value),
-
-    map: numOrNull($("map").value),
+    weight: n($("weight").value),
+    age_m: n($("age_m").value),
+    fio2: n($("fio2").value),
+    spo2: n($("spo2").value),
+    pao2: n($("pao2").value),
+    paco2: n($("paco2").value),
+    map: n($("map").value),
     vaso: $("vaso").value,
-
     vent_mode: $("vent_mode").value,
-    peep: numOrNull($("peep").value),
-    pplat: numOrNull($("pplat").value),
-    pip: numOrNull($("pip").value),
-    vt_mlkg: numOrNull($("vt_mlkg").value),
+    peep: n($("peep").value),
+    pplat: n($("pplat").value),
+    pip: n($("pip").value),
+    vt_mlkg: n($("vt_mlkg").value),
     compliance_hint: $("compliance_hint").value,
-
     auto_peep: $("auto_peep").value,
     bronchospasm: $("bronchospasm").value,
-
     air_leak: $("air_leak").value,
     sedation: $("sedation").value,
     senior_ok: $("senior_ok").checked,
-
-    // protocol params (optional)
-    step_peep: numOrNull($("step_peep").value),
-    step_time: numOrNull($("step_time").value),
-    peep_max: numOrNull($("peep_max").value),
-    pplat_stop: numOrNull($("pplat_stop").value),
-    map_drop_stop: numOrNull($("map_drop_stop").value),
-    spo2_stop: numOrNull($("spo2_stop").value),
-
-    local_protocol: $("local_protocol").value.trim()
+    local_protocol: $("local_protocol").value.trim(),
+    // optional overrides
+    step_peep: n($("step_peep").value),
+    step_time: n($("step_time").value),
+    peep_max: n($("peep_max").value),
+    spo2_stop: n($("spo2_stop").value),
+    map_drop_stop: n($("map_drop_stop").value),
+    pplat_stop: n($("pplat_stop").value),
   };
 }
-
 function derive(d){
   const out = {...d};
   out.dp = (d.pplat!=null && d.peep!=null) ? (d.pplat - d.peep) : null;
-  // simple oxygenation index proxy if PaO2 available: P/F ratio
-  out.pf = (d.pao2!=null && d.fio2!=null && d.fio2>0) ? (d.pao2 / d.fio2) : null;
+  out.pf = (d.pao2!=null && d.fio2!=null && d.fio2>0) ? (d.pao2/d.fio2) : null;
   return out;
 }
 
-/* --------- Rules --------- */
-function addRule(fired, level, title, detail){
-  fired.push({level, title, detail});
+/* ========= RULES ========= */
+function addRule(arr, level, title, detail){
+  arr.push({level, title, detail});
 }
-function renderRules(fired){
-  if(!fired.length) return "—";
+function renderRules(arr){
+  if(!arr.length) return "—";
   const order = {bad:0,warn:1,info:2,ok:3};
-  fired.sort((a,b)=>(order[a.level]??9)-(order[b.level]??9));
-  return fired.map(r=>{
-    const c = r.level==="bad" ? "bad" : (r.level==="warn" ? "warn" : "good");
-    const tag = r.level.toUpperCase();
-    const det = r.detail ? `<div class="small" style="color:var(--muted);margin-top:4px">${escapeHtml(r.detail)}</div>` : "";
-    return `<div class="tag"><b class="${c}">${tag}</b> ${escapeHtml(r.title)}</div>${det}`;
+  arr.sort((a,b)=>(order[a.level]??9)-(order[b.level]??9));
+  return arr.map(r=>{
+    const cls = r.level==="bad"?"bad":(r.level==="warn"?"warn":"good");
+    const det = r.detail ? `<div class="small" style="margin-top:4px">${esc(r.detail)}</div>` : "";
+    return `<div class="tag"><b class="${cls}">${r.level.toUpperCase()}</b> ${esc(r.title)}</div>${det}`;
   }).join("");
 }
 
-/* --------- Protocol suggestion (Recrutável) ---------
-   Objetivo: sugerir uma sequência stepwise + critérios de paragem.
-   - Se o utilizador já preencheu parâmetros, respeita.
-   - Caso contrário, sugere valores conservadores dependentes de contexto.
+/* ========= PROTOCOLO SUGERIDO (RECRUTÁVEL) =========
+   Sugere sempre que haja PEEP (mesmo que risco alto), excepto hard stop.
 */
-function suggestProtocolRecruitable(d){
-  // defaults conservadores (ajustáveis por ti)
-  const s = {
-    step_peep: 2,
-    step_time: 60,
-    peep_max: 16,
-    pplat_stop: 28,
-    map_drop_stop: 10,
-    spo2_stop: 85
+function suggestRecruitableProtocol(d){
+  const preset = getPreset();
+  const p = {
+    step_peep: d.step_peep ?? preset.step_peep,
+    step_time: d.step_time ?? preset.step_time,
+    peep_max: d.peep_max ?? preset.peep_max,
+    spo2_stop: d.spo2_stop ?? preset.spo2_stop,
+    map_drop_stop: d.map_drop_stop ?? preset.map_drop_stop,
+    pplat_stop: d.pplat_stop ?? preset.pplat_stop,
   };
 
-  // Heurísticas simples para sugerir mais conservador
-  if(d.age_m!=null && d.age_m < 6){
-    s.peep_max = 14;
-    s.pplat_stop = 26;
-  }
-  if(d.vaso==="yes"){
-    s.map_drop_stop = 8;
-    s.peep_max = Math.min(s.peep_max, 14);
-  }
-  if(d.compliance_hint==="worsens_with_peep"){
-    s.peep_max = Math.min(s.peep_max, 14);
-  }
+  // heurísticas conservadoras
+  if(d.vaso==="yes") p.peep_max = Math.min(p.peep_max, 14);
+  if(d.age_m!=null && d.age_m < 6) p.peep_max = Math.min(p.peep_max, 14);
+  if(d.compliance_hint==="worsens") p.peep_max = Math.min(p.peep_max, 14);
 
-  // Se utilizador já definiu, respeita
-  return {
-    step_peep: d.step_peep ?? s.step_peep,
-    step_time: d.step_time ?? s.step_time,
-    peep_max: d.peep_max ?? s.peep_max,
-    pplat_stop: d.pplat_stop ?? s.pplat_stop,
-    map_drop_stop: d.map_drop_stop ?? s.map_drop_stop,
-    spo2_stop: d.spo2_stop ?? s.spo2_stop,
-    source: (d.step_peep||d.step_time||d.peep_max||d.pplat_stop||d.map_drop_stop||d.spo2_stop) ? "manual" : "suggested"
-  };
+  // stop plateau sugerido (não é o alvo, é limite operativo sugerido)
+  if(p.pplat_stop==null) p.pplat_stop = 34;
+  return p;
 }
 
-function buildStepSequence(peep0, step, peepMax){
+function buildSteps(peep0, step, peepMax){
   if(peep0==null || step==null || peepMax==null) return [];
-  const steps = [];
-  const n = Math.max(1, Math.round((peepMax - peep0)/step));
-  for(let i=1;i<=n;i++){
-    const peepTarget = peep0 + i*step;
-    if(peepTarget > peepMax + 1e-9) break;
-    steps.push({i, peepTarget});
+  const out = [];
+  let current = peep0;
+  let i=1;
+  while(current + step <= peepMax + 1e-9){
+    current = current + step;
+    out.push({i, peep: current});
+    i++;
+    if(i>24) break;
   }
-  return steps;
+  return out;
 }
 
-/* --------- Evaluate --------- */
+/* ========= EVAL (DP/PPLAT SOFT) ========= */
 function evaluate(d){
-  const fired = [];
-  let benefit = 0, risk = 0;
+  const rules = [];
+  let benefit=0, risk=0;
 
-  // minimal sanity
-  if(d.fio2==null || d.spo2==null) addRule(fired,"warn","Oxigenação incompleta","Ideal: FiO₂ e SpO₂; PaO₂ opcional para P/F.");
-  if(d.map==null) addRule(fired,"warn","Hemodinâmica incompleta","MAP/PAM recomendado.");
-  if(d.peep==null) addRule(fired,"warn","Ventilação incompleta","PEEP actual necessário para sequência stepwise.");
+  // completeness
+  if(d.fio2==null || d.spo2==null) addRule(rules,"warn","Oxigenação incompleta","FiO₂ e SpO₂ recomendados.");
+  if(d.map==null) addRule(rules,"warn","MAP não preenchida","Avaliação hemodinâmica recomendada.");
+  if(d.peep==null) addRule(rules,"warn","PEEP não preenchida","Sem PEEP actual não há sequência stepwise.");
 
-  // hard stop
+  // HARD STOP
   if(d.air_leak==="yes"){
-    addRule(fired,"bad","Suspeita/risco de fuga aérea ou pneumotórax não drenado","ARM/pressões elevadas podem ser perigosas.");
-    risk += 5;
+    addRule(rules,"bad","Hard stop: fuga aérea/pneumotórax não drenado","Evitar ARM/pressões elevadas até resolver/excluir.");
+    risk += 10;
   }
 
-  // sedation
-  if(d.sedation==="no"){
-    addRule(fired,"warn","Sedação/sincronia não optimizadas","Asincronia aumenta risco e reduz eficácia da manobra.");
-    risk += 2;
-  }
+  // soft risk modifiers
+  if(d.sedation==="no"){ addRule(rules,"warn","Sedação/sincronia inadequada","Optimizar antes/durante ARM."); risk += 1; }
+  if(d.vaso==="yes"){ addRule(rules,"warn","Vasoactivos em escalada","Risco hemodinâmico com ↑pressão intratorácica."); risk += 2; }
 
-  // vasoactives
-  if(d.vaso==="yes"){
-    addRule(fired,"warn","Vasoactivos em escalada","Aumento de pressão intratorácica pode piorar retorno venoso.");
-    risk += 2;
-  }
-
-  // dp info
+  // DP soft target
   if(d.dp!=null){
-    addRule(fired,"info","Driving pressure disponível",`DP=${d.dp.toFixed(1)} cmH₂O (Pplat-PEEP).`);
-    if(d.dp>=16){ addRule(fired,"warn","DP elevado (limiar ajustável)","Reforçar estratégia protetora e limites de pressão."); risk += 2; }
-    else benefit += 1;
+    addRule(rules,"info","Driving pressure",`DP=${d.dp.toFixed(1)} cmH₂O (alvo UCIP ≤ ${UCIP_DP_TARGET}).`);
+    if(d.dp > UCIP_DP_TARGET && d.dp <= DP_SOFT_HIGH){
+      addRule(rules,"warn","DP acima do alvo (soft)","Permitido; risco ↑. Ajustar ventilação e vigiar.");
+      risk += 1;
+    } else if(d.dp > DP_SOFT_HIGH){
+      addRule(rules,"warn","DP muito elevado (soft high)","Permitido; risco ↑↑. Limitar escalada e reavaliar estratégia.");
+      risk += 2;
+    } else {
+      benefit += 1;
+    }
+  } else {
+    addRule(rules,"info","DP indisponível","Precisas de Pplat e PEEP para DP.");
   }
 
-  // recruitability hint
+  // Plateau soft target
+  if(d.pplat!=null){
+    addRule(rules,"info","Plateau",`Pplat=${d.pplat.toFixed(1)} (alvo UCIP ≤ ${UCIP_PPLAT_TARGET}).`);
+    if(d.pplat > UCIP_PPLAT_TARGET && d.pplat <= PPLAT_SOFT_HIGH){
+      addRule(rules,"warn","Pplat acima do alvo (soft)","Permitido; risco ↑. Evitar aumentos desnecessários e vigiar.");
+      risk += 1;
+    } else if(d.pplat > PPLAT_SOFT_HIGH){
+      addRule(rules,"warn","Pplat muito elevado (soft high)","Permitido; risco ↑↑. Evitar aumentar ainda mais; reavaliar.");
+      risk += 2;
+    }
+  }
+
+  // recruitability benefit
   if(d.mode==="recruitable"){
-    if(d.compliance_hint==="improves_with_peep"){ addRule(fired,"info","Recrutabilidade provável","Complacência melhora com ↑PEEP."); benefit += 2; }
-    if(d.compliance_hint==="worsens_with_peep"){ addRule(fired,"warn","Possível não-recrutável/hiperinsuflação","Complacência piora com ↑PEEP."); risk += 2; }
+    if(d.compliance_hint==="improves"){ addRule(rules,"info","Recrutabilidade provável","Complacência melhora com ↑PEEP."); benefit += 2; }
+    if(d.compliance_hint==="worsens"){ addRule(rules,"warn","Possível não-recrutável/hiperinsuflação","Complacência piora com ↑PEEP."); risk += 1; }
+    if(d.spo2!=null && d.fio2!=null && d.spo2<90 && d.fio2>=0.6){
+      addRule(rules,"info","Hipoxemia com FiO₂ alta","Potencial benefício de optimização/recrutamento.");
+      benefit += 2;
+    }
   }
 
   // obstructive
   if(d.mode==="obstructive"){
-    addRule(fired,"info","Modo Obstrutivo","ARM clássica não recomendada; foco anti-auto-PEEP/hiperinsuflação.");
-    if(d.auto_peep==="yes"){ addRule(fired,"warn","Auto-PEEP presente/suspeita","Evitar escalada de PEEP/pressões; vigiar hemodinâmica."); risk += 2; }
-    if(d.bronchospasm==="yes"){ addRule(fired,"warn","Broncoespasmo dominante","Evitar empilhamento; priorizar expiração e monitorização."); risk += 1; }
+    addRule(rules,"info","Modo obstrutivo","Não sugerir ARM clássica; guia anti-auto-PEEP/hiperinsuflação.");
+    if(d.auto_peep==="yes"){ addRule(rules,"warn","Auto-PEEP provável","Evitar escalada de PEEP/pressões."); risk += 2; }
+    if(d.bronchospasm==="yes"){ addRule(rules,"warn","Broncoespasmo dominante","Garantir tempo expiratório; evitar empilhamento."); risk += 1; }
   }
 
-  // oxygen severity (coarse)
-  if(d.fio2!=null && d.spo2!=null){
-    if(d.spo2<88 && d.fio2>=0.6){ addRule(fired,"info","Hipoxemia relevante","SpO₂ baixa com FiO₂ alta pode justificar optimização (inclui ARM se recrutável)."); benefit += 2; }
-    if(d.spo2>=92 && d.fio2<=0.4 && d.mode==="recruitable"){ addRule(fired,"warn","Oxigenação já razoável","Benefício potencial de ARM pode ser baixo; depende do contexto."); risk += 1; }
-  }
-
-  const hardStop = fired.some(r=>r.level==="bad");
+  const hardStop = rules.some(r=>r.level==="bad");
   const score = benefit - risk;
 
-  let status="Cautela", cls="warn";
-  if(hardStop){ status="NÃO RECOMENDADO (hard stop)"; cls="bad"; }
-  else if(d.mode==="obstructive"){
-    status = (risk>=3) ? "Cautela — guia obstrutivo (sem ARM)" : "Guia obstrutivo (sem ARM)";
+  let cls="warn", status="Cautela";
+  if(hardStop){
+    cls="bad"; status="NÃO RECOMENDADO (hard stop)";
+  } else if(d.mode==="obstructive"){
     cls = (risk>=3) ? "warn" : "good";
+    status = "Sem ARM clássica (guia obstrutivo)";
   } else {
-    if(score>=2){ status="ARM possível / provável benefício (com protocolo)"; cls="good"; }
-    else if(score<=-2){ status="ARM desfavorável (risco/benefício)"; cls="warn"; }
-    else status="Cautela (optimizar/mais dados)";
+    if(score>=2){ cls="good"; status="ARM possível (benefício provável)"; }
+    else if(score<=-2){ cls="warn"; status="ARM de benefício duvidoso (risco/benefício)"; }
+    else { cls="warn"; status="Cautela (optimizar/mais dados)"; }
   }
 
-  return {fired, hardStop, status, cls, benefit, risk, score};
+  return {rules, benefit, risk, score, hardStop, cls, status};
 }
 
-/* --------- Outputs builders --------- */
+/* ========= OUTPUT BUILDERS ========= */
 function buildMetrics(d, ev){
   const lines = [];
-  lines.push(`Modo: ${d.mode==="recruitable" ? "Recrutável" : "Obstrutivo"} | Preset: ${d.preset || "—"}`);
-  if(d.dp!=null) lines.push(`DP: ${d.dp.toFixed(1)} cmH₂O`);
+  lines.push(`Modo: ${d.mode==="recruitable"?"Recrutável":"Obstrutivo"} | Preset: ${d.preset}`);
+  if(d.dp!=null) lines.push(`DP: ${d.dp.toFixed(1)} (alvo ≤ ${UCIP_DP_TARGET}, soft)`);
+  if(d.pplat!=null) lines.push(`Pplat: ${d.pplat.toFixed(1)} (alvo ≤ ${UCIP_PPLAT_TARGET}, soft)`);
   if(d.pf!=null) lines.push(`P/F: ${Math.round(d.pf)} (PaO₂/FiO₂)`);
   if(d.fio2!=null && d.spo2!=null) lines.push(`FiO₂: ${d.fio2} | SpO₂: ${d.spo2}%`);
-  if(d.map!=null) lines.push(`MAP: ${d.map} mmHg | Vasoactivos: ${d.vaso}`);
-  lines.push(`Score (benefício-risco): ${ev.score} (benefício=${ev.benefit}, risco=${ev.risk})`);
-  return `<div class="mono" style="white-space:pre-wrap">${escapeHtml(lines.join("\n"))}</div>`;
+  if(d.map!=null) lines.push(`MAP: ${d.map} | Vaso: ${d.vaso}`);
+  lines.push(`Score: ${ev.score} (benef=${ev.benefit} | risco=${ev.risk})`);
+  return `<div class="mono" style="white-space:pre-wrap">${esc(lines.join("\n"))}</div>`;
 }
 
-function buildProtocolAndSteps(d, ev){
+function buildProtocol(d, ev){
   if(d.mode==="obstructive"){
-    return `<div class="warnbox"><b class="warn">Sem ARM clássica</b>. Em obstrutivo, a app não sugere protocolo de recrutamento; ver tab <b>Manual</b> e <b>Fluxograma</b>.</div>`;
+    return `<div class="warnbox"><b class="warn">Obstrutivo</b>: não é indicado protocolo de recrutamento alveolar clássico. Ver Manual/Fluxograma.</div>`;
   }
 
-  if(ev.hardStop){
-    return `<div class="badbox"><b class="bad">Hard stop</b>: não sugerir ARM/protocolo enquanto houver risco de fuga aérea/pneumotórax não drenado.</div>`;
-  }
-
-  const p = suggestProtocolRecruitable(d);
-  const steps = buildStepSequence(d.peep, p.step_peep, p.peep_max);
-
-  const src = (p.source==="suggested")
-    ? `<span class="tag"><b class="good">SUGERIDO</b> parâmetros auto-preenchidos</span>`
-    : `<span class="tag"><b class="warn">MANUAL</b> parâmetros fornecidos por ti</span>`;
-
-  const gate = d.senior_ok
-    ? `<div class="okbox"><b class="good">Validado por sénior</b>: guia executável (seguir protocolo institucional).</div>`
-    : `<div class="warnbox"><b class="warn">Bloqueado</b>: para guia executável, assinala <b>Validação sénior</b>.</div>`;
+  const gate =
+    ev.hardStop ? `<div class="badbox"><b class="bad">Hard stop</b>: não executar ARM enquanto não resolver/excluir fuga aérea/pneumotórax.</div>` :
+    (d.senior_ok ? `<div class="okbox"><b class="good">Validado por sénior</b>: guia executável (sob protocolo institucional).</div>` :
+                   `<div class="warnbox"><b class="warn">Sem validação sénior</b>: guia educativo (a execução depende de ti).</div>`);
 
   if(d.peep==null){
-    return `${gate}<div class="warnbox"><b class="warn">Falta PEEP actual</b>: sem PEEP actual não é possível gerar sequência.</div>`;
+    return `${gate}<div class="warnbox"><b class="warn">Falta PEEP actual</b>: sem PEEP actual não há sequência stepwise.</div>`;
   }
 
-  if(!steps.length){
-    return `${gate}${src}
-      <div class="warnbox"><b class="warn">Sem sequência</b>: faltam parâmetros suficientes para gerar steps.</div>`;
-  }
+  const p = suggestRecruitableProtocol(d);
+  const steps = buildSteps(d.peep, p.step_peep, p.peep_max);
 
-  const crit = `Parar se: SpO₂ &lt; ${p.spo2_stop}% ; queda MAP ≥ ${p.map_drop_stop} mmHg ; Pplat ≥ ${p.pplat_stop} cmH₂O ; ou intolerância clínica.`;
+  const paramsLine =
+    `Parâmetros sugeridos: step=${p.step_peep} | tempo=${p.step_time}s | PEEPmax=${p.peep_max} | stopSpO₂=${p.spo2_stop}% | stopMAPdrop=${p.map_drop_stop} | stopPplat=${p.pplat_stop} (operacional) | alvos soft: DP≤${UCIP_DP_TARGET}, Pplat≤${UCIP_PPLAT_TARGET}.`;
 
-  const stepHtml = `
-    <div class="okbox">
-      <b class="good">Sequência stepwise (PEEP)</b><br>
-      ${src}
-      <ol class="list">
-        ${steps.map(s=>`<li>PEEP → <span class="mono">${s.peepTarget.toFixed(1)}</span> cmH₂O durante <span class="mono">${p.step_time}</span>s; reavaliar (SpO₂, MAP, EtCO₂/ventilação, mecânica).</li>`).join("")}
-        <li>Depois: titulação de “PEEP de manutenção” conforme resposta e protocolo local; documentar.</li>
-      </ol>
-      <div class="small" style="margin-top:8px">${crit}</div>
-      <div class="small" style="margin-top:8px;color:var(--muted)">
-        Parâmetros: step=${p.step_peep} | tempo=${p.step_time}s | PEEPmax=${p.peep_max} | stopPplat=${p.pplat_stop} | stopMAPdrop=${p.map_drop_stop} | stopSpO₂=${p.spo2_stop}
-      </div>
-    </div>
-  `;
+  const stop = `Parar se: SpO₂ &lt; ${p.spo2_stop}% | queda MAP ≥ ${p.map_drop_stop} mmHg | Pplat ≥ ${p.pplat_stop} | ou intolerância clínica.`;
 
-  return `${gate}${stepHtml}${d.local_protocol ? `<div class="box" style="margin-top:10px"><b>Nota protocolo local</b><div class="small" style="margin-top:6px;white-space:pre-wrap">${escapeHtml(d.local_protocol)}</div></div>` : ""}`;
+  const seq = steps.length ? `
+    <ol class="list">
+      ${steps.map(s=>`<li>PEEP → <span class="mono">${s.peep.toFixed(1)}</span> cmH₂O durante <span class="mono">${p.step_time}</span>s; reavaliar SpO₂/MAP/pressões/ventilação.</li>`).join("")}
+      <li>Depois: titulação de PEEP de manutenção (menor PEEP que mantém ganho, idealmente aproximando DP/Pplat dos alvos).</li>
+    </ol>` : `<div class="warnbox"><b class="warn">Sem sequência</b>: não foi possível gerar steps (ver step/PEEPmax).</div>`;
+
+  const local = d.local_protocol ? `<div class="box" style="margin-top:10px"><b>Nota protocolo local</b><div class="small" style="margin-top:6px;white-space:pre-wrap">${esc(d.local_protocol)}</div></div>` : "";
+
+  return `${gate}<div class="box"><div class="small">${esc(paramsLine)}</div><div class="small" style="margin-top:6px">${esc(stop)}</div>${seq}</div>${local}`;
 }
 
 function buildManual(d, ev){
   if(ev.hardStop){
-    return `<div class="badbox"><b class="bad">Hard stop</b>: parar e estabilizar/excluir fuga aérea/pneumotórax; reavaliar indicação.</div>`;
+    return `<div class="badbox"><b class="bad">Hard stop</b>: estabilizar/excluir fuga aérea/pneumotórax e reavaliar.</div>`;
   }
 
   if(d.mode==="obstructive"){
     const gate = d.senior_ok
-      ? `<div class="okbox"><b class="good">Validado por sénior</b>: guia executável (seguir protocolo institucional).</div>`
-      : `<div class="warnbox"><b class="warn">Bloqueado</b>: para guia executável, assinala <b>Validação sénior</b>.</div>`;
-
+      ? `<div class="okbox"><b class="good">Validado por sénior</b>: guia executável (sob protocolo).</div>`
+      : `<div class="warnbox"><b class="warn">Sem validação sénior</b>: guia educativo.</div>`;
     return `${gate}
-      <div class="warnbox">
-        <b class="warn">Obstrutivo — sem ARM clássica</b>
+      <div class="box">
+        <b>Obstrutivo (sem ARM clássica)</b>
         <ol class="list">
-          <li><b>Confirmar obstrução dominante</b> e excluir tubo/secreções/pneumotórax.</li>
-          <li><b>Evitar empilhamento</b>: garantir tempo expiratório suficiente; vigiar capnografia e sinais de hiperinsuflação.</li>
-          <li><b>Vigiar hemodinâmica</b>: se deteriora com ↑pressões, reverter e reavaliar.</li>
-          <li><b>PEEP externa</b>: apenas se indicado e sob protocolo, com vigilância de auto-PEEP.</li>
+          <li>Excluir causas mecânicas (tubo/secreções/pneumotórax).</li>
+          <li>Evitar empilhamento: garantir tempo expiratório; vigiar capnografia.</li>
+          <li>Vigiar hemodinâmica: hiperinsuflação ↓ retorno venoso.</li>
+          <li>PEEP externa: apenas se indicado e sob protocolo, com atenção a auto-PEEP.</li>
         </ol>
-      </div>
-      ${d.local_protocol ? `<div class="box" style="margin-top:10px"><b>Protocolo local</b><div class="small" style="margin-top:6px;white-space:pre-wrap">${escapeHtml(d.local_protocol)}</div></div>` : ""}`;
+      </div>`;
   }
 
-  // recruitable manual how-to
-  const p = suggestProtocolRecruitable(d);
+  const p = suggestRecruitableProtocol(d);
   const gate = d.senior_ok
-    ? `<div class="okbox"><b class="good">Validado por sénior</b>: guia executável (seguir protocolo institucional).</div>`
-    : `<div class="warnbox"><b class="warn">Bloqueado</b>: para guia executável, assinala <b>Validação sénior</b>.</div>`;
+    ? `<div class="okbox"><b class="good">Validado por sénior</b>: guia executável (sob protocolo).</div>`
+    : `<div class="warnbox"><b class="warn">Sem validação sénior</b>: guia educativo.</div>`;
 
   return `${gate}
     <div class="box">
       <b>Antes</b>
       <ul class="list">
-        <li>Definir indicação/objetivo e confirmar que a hipótese é <b>colapso recrutável</b>.</li>
-        <li>Preparar monitorização: SpO₂ contínua, PA/MAP (ideal invasiva), EtCO₂, pressões; registar baseline.</li>
-        <li>Optimizar sincronia (sedação/analgesia; conforme protocolo institucional).</li>
-        <li>Definir critérios de paragem: SpO₂&lt;${p.spo2_stop}%, queda MAP≥${p.map_drop_stop} mmHg, Pplat≥${p.pplat_stop} cmH₂O, ou sinais clínicos.</li>
+        <li>Definir indicação/objetivo; confirmar padrão recrutável.</li>
+        <li>Monitorização: SpO₂ contínua, PA/MAP, EtCO₂, pressões; registar baseline.</li>
+        <li>Optimizar sincronia (sedação/analgesia) conforme protocolo.</li>
+        <li>Alvos soft UCIP: DP≤${UCIP_DP_TARGET} e Pplat≤${UCIP_PPLAT_TARGET} sempre que possível (não proíbem).</li>
+        <li>Critérios de paragem (operacionais): SpO₂&lt;${p.spo2_stop}%, MAP↓≥${p.map_drop_stop}, Pplat≥${p.pplat_stop} ou intolerância clínica.</li>
       </ul>
     </div>
     <div class="box" style="margin-top:10px">
-      <b>Durante (stepwise PEEP)</b>
+      <b>Durante (stepwise)</b>
       <ul class="list">
-        <li>Subir PEEP em steps; manter cada step por ${p.step_time}s; reavaliar a cada step.</li>
-        <li>Se não houver melhoria ou houver deterioração hemodinâmica/mecânica → reduzir e reavaliar.</li>
+        <li>Subir PEEP em steps; manter ${p.step_time}s por step; reavaliar a cada step.</li>
+        <li>Se piora hemodinâmica/mecânica, reverter e reavaliar.</li>
       </ul>
     </div>
     <div class="box" style="margin-top:10px">
       <b>Depois</b>
       <ul class="list">
-        <li>Titular PEEP de manutenção (o menor PEEP que mantém ganho em oxigenação/mecânica com DP aceitável).</li>
+        <li>Titular PEEP de manutenção; tentar regressar aos alvos soft (DP/Pplat) se clinicamente possível.</li>
         <li>Reavaliar 5–15 min e documentar resposta.</li>
       </ul>
-    </div>
-    ${d.local_protocol ? `<div class="box" style="margin-top:10px"><b>Protocolo local</b><div class="small" style="margin-top:6px;white-space:pre-wrap">${escapeHtml(d.local_protocol)}</div></div>` : ""}`;
+    </div>`;
 }
 
-function buildChecklist(d){
-  const base = [
+function buildChecklist(){
+  const items = [
     "Indicação/objetivo definido e comunicado.",
     "Monitorização pronta: SpO₂, PA/MAP, EtCO₂; alarmes adequados.",
-    "Avaliado risco de fuga aérea/pneumotórax; plano de resposta.",
-    "Sincronia optimizada (sedação/analgesia) conforme protocolo.",
+    "Risco de fuga aérea/pneumotórax avaliado; plano de resposta.",
+    "Sedação/sincronia optimizadas (conforme protocolo).",
     "Critérios de paragem definidos antes de iniciar.",
-    "Documentar baseline, passos e resposta."
+    "Documentar baseline, passos e resposta.",
+    `Alvos soft UCIP: Pplat ≤ ${UCIP_PPLAT_TARGET} e DP ≤ ${UCIP_DP_TARGET} (sempre que possível).`
   ];
-  const obstExtra = [
-    "Excluir tubo/secreções como causa principal.",
-    "Vigiar sinais de auto-PEEP/hiperinsuflação e hemodinâmica."
-  ];
-
-  const items = (d.mode==="obstructive") ? [...base, ...obstExtra] : base;
-  return `<ul class="list">${items.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul>`;
+  return `<ul class="list">${items.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`;
 }
 
 function buildFlow(d, ev){
-  const mk = (title, body, cls="flowstep") =>
-    `<div class="${cls}"><b>${escapeHtml(title)}</b><div class="small" style="margin-top:6px">${body}</div></div>`;
-
+  const b = (t, s)=>`<div class="box" style="margin-bottom:10px"><b>${esc(t)}</b><div class="small" style="margin-top:6px">${s}</div></div>`;
   if(d.mode==="obstructive"){
-    return `
-      <div class="flowbox">
-        ${mk("1) Identificar padrão obstrutivo", "Se broncoespasmo/auto-PEEP provável → evitar ARM clássica.")}
-        <div class="flowarrow">↓</div>
-        ${mk("2) Hard stops", (ev.hardStop ? "<span class='bad'>Fuga aérea/pneumotórax não drenado</span> → estabilizar antes de qualquer escalada." : "Sem hard stop detectado."))}
-        <div class="flowarrow">↓</div>
-        ${mk("3) Estratégia", "Foco: evitar empilhamento, garantir expiração, vigiar hemodinâmica; PEEP externa apenas sob protocolo e com cautela.")}
-        <div class="flowarrow">↓</div>
-        ${mk("4) Validação", (d.senior_ok ? "<span class='good'>Validado por sénior</span> → guia executável." : "<span class='warn'>Sem validação sénior</span> → guia educativo."))}
-      </div>
-    `;
+    return b("1) Obstrutivo", "Sem ARM clássica → seguir guia obstrutivo.")
+      + b("2) Hard stop?", ev.hardStop ? "<span class='bad'>Sim</span> → estabilizar/excluir fuga aérea/pneumotórax." : "Não detectado.")
+      + b("3) Estratégia", "Evitar empilhamento/auto-PEEP; vigiar hemodinâmica; PEEP externa só sob protocolo.")
+      + b("4) Validação", d.senior_ok ? "<span class='good'>Sénior OK</span>" : "<span class='warn'>Sem validação</span>");
   }
-
-  return `
-    <div class="flowbox">
-      ${mk("1) Confirmar recrutabilidade", "Sugestões: hipoxemia relevante + mecânica compatível + complacência melhora com ↑PEEP (se disponível).")}
-      <div class="flowarrow">↓</div>
-      ${mk("2) Hard stops", (ev.hardStop ? "<span class='bad'>Fuga aérea/pneumotórax não drenado</span> → não fazer ARM." : "Sem hard stop detectado."))}
-      <div class="flowarrow">↓</div>
-      ${mk("3) Risco/benefício", `Score = benefício(${ev.benefit}) − risco(${ev.risk}) = <b>${ev.score}</b>.`)}
-      <div class="flowarrow">↓</div>
-      ${mk("4) Protocolo stepwise", "Se favorável: sequência stepwise + critérios de paragem + titulação de PEEP de manutenção.")}
-      <div class="flowarrow">↓</div>
-      ${mk("5) Validação", (d.senior_ok ? "<span class='good'>Validado por sénior</span> → guia executável." : "<span class='warn'>Sem validação sénior</span> → guia educativo."))}
-    </div>
-  `;
+  return b("1) Suspeita recrutável", "Hipoxemia relevante e mecânica compatível; complacência melhora com ↑PEEP ajuda.")
+    + b("2) Hard stop?", ev.hardStop ? "<span class='bad'>Sim</span> → não executar ARM." : "Não detectado.")
+    + b("3) Alvos UCIP (soft)", `Tentar manter Pplat ≤ ${UCIP_PPLAT_TARGET} e DP ≤ ${UCIP_DP_TARGET} (não proíbe).`)
+    + b("4) Protocolo stepwise", "Gerar steps + critérios de paragem + titulação de PEEP manutenção.")
+    + b("5) Validação", d.senior_ok ? "<span class='good'>Sénior OK</span>" : "<span class='warn'>Sem validação</span>");
 }
 
-/* --------- Chart --------- */
-function drawPeepChart(steps, peep0){
-  const c = $("peepChart");
+/* ========= CHART ========= */
+function drawChart(steps, peep0){
+  const c = $("chart");
   const ctx = c.getContext("2d");
   ctx.clearRect(0,0,c.width,c.height);
 
-  const pad = 34, w=c.width, h=c.height;
-  ctx.strokeStyle = "rgba(230,240,255,0.22)";
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.moveTo(pad,pad); ctx.lineTo(pad,h-pad); ctx.lineTo(w-pad,h-pad);
-  ctx.stroke();
+  const pad=34, w=c.width, h=c.height;
+  ctx.strokeStyle="rgba(230,240,255,0.22)";
+  ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(pad,pad); ctx.lineTo(pad,h-pad); ctx.lineTo(w-pad,h-pad); ctx.stroke();
+  ctx.fillStyle="rgba(231,238,252,0.85)"; ctx.font="14px system-ui"; ctx.fillText("Sequência PEEP", pad, 20);
 
-  ctx.fillStyle = "rgba(231,238,252,0.85)";
-  ctx.font = "14px system-ui";
-  ctx.fillText("Sequência PEEP", pad, 20);
-
-  if(!steps || !steps.length || peep0==null){
-    ctx.fillStyle = "rgba(138,160,194,0.9)";
-    ctx.font = "12px system-ui";
-    ctx.fillText("Sem sequência (modo obstrutivo ou faltam parâmetros/PEEP).", pad, pad+18);
+  if(!steps.length || peep0==null){
+    ctx.fillStyle="rgba(138,160,194,0.9)"; ctx.font="12px system-ui";
+    ctx.fillText("Sem sequência (faltam parâmetros/PEEP ou modo obstrutivo).", pad, pad+18);
     return;
   }
 
-  const values = [peep0, ...steps.map(s=>s.peepTarget)];
-  const minV = Math.min(...values), maxV = Math.max(...values);
-  const yMin = minV - 1, yMax = maxV + 1;
+  const values=[peep0, ...steps.map(s=>s.peep)];
+  const minV=Math.min(...values), maxV=Math.max(...values);
+  const yMin=minV-1, yMax=maxV+1;
 
   const x0=pad, x1=w-pad, y0=h-pad, y1=pad;
-  const xAt=(i)=> x0 + (x1-x0)*(i/(values.length-1));
-  const yAt=(v)=> y0 - (y0-y1)*((v-yMin)/(yMax-yMin || 1));
+  const xAt=i=>x0+(x1-x0)*(i/(values.length-1));
+  const yAt=v=>y0-(y0-y1)*((v-yMin)/(yMax-yMin || 1));
 
-  ctx.strokeStyle = "rgba(231,238,252,0.75)";
-  ctx.lineWidth = 2;
+  ctx.strokeStyle="rgba(231,238,252,0.75)";
+  ctx.lineWidth=2;
   ctx.beginPath();
-  values.forEach((v,i)=>{ const x=xAt(i), y=yAt(v); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); });
+  values.forEach((v,i)=>{const x=xAt(i), y=yAt(v); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);});
   ctx.stroke();
 
-  ctx.fillStyle = "rgba(231,238,252,0.85)";
-  ctx.font = "11px ui-monospace, Menlo, Consolas";
-  values.forEach((v,i)=>{
-    const x=xAt(i), y=yAt(v);
-    ctx.beginPath(); ctx.arc(x,y,3.2,0,Math.PI*2); ctx.fill();
-    ctx.fillText(String(Math.round(v*10)/10), x-8, y-10);
-  });
+  ctx.fillStyle="rgba(231,238,252,0.85)";
+  ctx.font="11px ui-monospace, Menlo, Consolas";
+  values.forEach((v,i)=>{const x=xAt(i), y=yAt(v); ctx.beginPath(); ctx.arc(x,y,3.2,0,Math.PI*2); ctx.fill(); ctx.fillText(String(Math.round(v*10)/10), x-8, y-10);});
 }
 
-/* --------- Note / PDF / Copy --------- */
-function buildNote(d, ev, protocolSteps){
-  const now = new Date();
-  const stamp = now.toISOString().slice(0,19).replace("T"," ");
-  const firedTxt = ev.fired.map(r=>`- [${r.level.toUpperCase()}] ${r.title}${r.detail ? " — " + r.detail : ""}`).join("\n");
+/* ========= NOTE / COPY / PDF ========= */
+function buildNote(d, ev, p, steps){
+  const now=new Date().toISOString().slice(0,19).replace("T"," ");
+  const fired = ev.rules.map(r=>`- [${r.level.toUpperCase()}] ${r.title}${r.detail ? " — "+r.detail : ""}`).join("\n");
+  const seq = (steps && steps.length) ? steps.map(s=>`- PEEP ${s.peep.toFixed(1)} por ${p.step_time}s`).join("\n") : "—";
 
-  const p = (d.mode==="recruitable" && !ev.hardStop) ? suggestProtocolRecruitable(d) : null;
-  const stepsTxt = (protocolSteps && protocolSteps.length)
-    ? protocolSteps.map(s=>`- PEEP ${s.peepTarget.toFixed(1)} por ${p.step_time}s`).join("\n")
-    : "—";
-
-  return `Pulmoniq — Pediatric ARM (educacional) | ${stamp}
-Modo: ${d.mode==="recruitable" ? "Recrutável" : "Obstrutivo"} | Preset: ${d.preset || "—"}
-Validação sénior: ${d.senior_ok ? "SIM" : "NÃO"}
-
-Dx/Objetivo: ${d.dx || "—"} | ${d.goal || "—"}
+  return `Pulmoniq — Pediatric ARM (educacional) | ${now}
+Modo: ${d.mode==="recruitable"?"Recrutável":"Obstrutivo"} | Preset: ${d.preset} | Sénior: ${d.senior_ok?"SIM":"NÃO"}
+Dx/Objetivo: ${d.dx||"—"} | ${d.goal||"—"}
 
 Dados:
-- Peso: ${d.weight ?? "—"} kg | Idade: ${d.age_m ?? "—"} meses
-- FiO2: ${d.fio2 ?? "—"} | SpO2: ${d.spo2 ?? "—"}% | PaO2: ${d.pao2 ?? "—"} | P/F: ${d.pf!=null ? Math.round(d.pf) : "—"}
-- PaCO2: ${d.paco2 ?? "—"} | MAP: ${d.map ?? "—"} | Vaso: ${d.vaso}
-- Vent: ${d.vent_mode} | PEEP: ${d.peep ?? "—"} | Pplat: ${d.pplat ?? "—"} | PIP: ${d.pip ?? "—"} | Vt: ${d.vt_mlkg ?? "—"} | DP: ${d.dp ?? "—"}
-- Segurança: air_leak=${d.air_leak} | sedação=${d.sedation}
+- Peso ${d.weight ?? "—"} kg | Idade ${d.age_m ?? "—"} meses
+- FiO2 ${d.fio2 ?? "—"} | SpO2 ${d.spo2 ?? "—"}% | PaO2 ${d.pao2 ?? "—"} | P/F ${d.pf!=null?Math.round(d.pf):"—"}
+- MAP ${d.map ?? "—"} | Vaso ${d.vaso}
+- Vent ${d.vent_mode} | PEEP ${d.peep ?? "—"} | Pplat ${d.pplat ?? "—"} | DP ${d.dp!=null?d.dp.toFixed(1):"—"}
+
+Alvos soft UCIP: Pplat ≤ ${UCIP_PPLAT_TARGET} | DP ≤ ${UCIP_DP_TARGET}
 
 Resultado: ${ev.status}
 
-Regras activadas:
-${firedTxt || "—"}
+Regras:
+${fired || "—"}
 
-Protocolo/Sequência:
-${(d.mode==="recruitable" && !ev.hardStop) ? (
-`Parâmetros: step=${p.step_peep} | tempo=${p.step_time}s | PEEPmax=${p.peep_max} | stopPplat=${p.pplat_stop} | stopMAPdrop=${p.map_drop_stop} | stopSpO2=${p.spo2_stop}
-Steps:
-${stepsTxt}
-Critérios de paragem: SpO2<${p.spo2_stop}%, queda MAP≥${p.map_drop_stop}, Pplat≥${p.pplat_stop} ou intolerância.`
-) : "Sem ARM clássica / ou hard stop."}
+Protocolo:
+${(d.mode==="recruitable" && !ev.hardStop && d.peep!=null) ? (
+`Params: step=${p.step_peep} | tempo=${p.step_time}s | PEEPmax=${p.peep_max} | stopSpO2=${p.spo2_stop}% | stopMAPdrop=${p.map_drop_stop} | stopPplat=${p.pplat_stop}
+Sequência:
+${seq}`
+) : "Sem ARM clássica / ou hard stop / ou falta PEEP."}
 
-Notas protocolo local:
+Notas locais:
 ${d.local_protocol || "—"}
 `;
 }
 
-$("copyNote").addEventListener("click", async ()=>{
+$("copyBtn").addEventListener("click", async ()=>{
   try{
     await navigator.clipboard.writeText($("noteOut").value || "");
-    $("copyNote").textContent="Copiado ✓";
-    setTimeout(()=>$("copyNote").textContent="Copiar registo", 1200);
+    $("copyBtn").textContent="Copiado ✓";
+    setTimeout(()=>$("copyBtn").textContent="Copiar registo", 1200);
   }catch(e){
-    alert("Cópia automática falhou. Copia manualmente.");
+    alert("Falhou a cópia automática. Copia manualmente.");
   }
 });
 
 $("pdfBtn").addEventListener("click", ()=>{
-  const note = $("noteOut").value || "";
-  const html = `<!doctype html><html><head><meta charset="utf-8">
-<title>Pulmoniq - Registo</title>
-<style>
-body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;margin:24px}
-pre{white-space:pre-wrap;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;line-height:1.35}
-h1{font-size:16px;margin:0 0 12px}
-.small{color:#444;font-size:12px;margin-bottom:12px}
-</style></head><body>
-<h1>Pulmoniq — Pediatric ARM (Registo)</h1>
-<div class="small">Gerado pela app. Validar com protocolo institucional e sénior responsável.</div>
-<pre>${escapeHtml(note)}</pre>
-<script>window.onload=()=>{window.print();}</script>
-</body></html>`;
-  const w = window.open("", "_blank");
-  w.document.open(); w.document.write(html); w.document.close();
+  window.print(); // PDF pelo diálogo do iOS/Browser
 });
 
-/* --------- Run --------- */
+/* ========= MAIN RUN ========= */
 function renderStatus(d, ev){
   $("statusBadge").textContent = ev.status;
-  $("statusBadge").className = "badge " + (ev.cls==="good"?"good":ev.cls==="bad"?"bad":"warn");
+  $("statusBadge").className = "badge " + ev.cls;
 
-  const meta = [];
+  const meta=[];
   if(d.dp!=null) meta.push(`DP ${d.dp.toFixed(1)}`);
-  if(d.pf!=null) meta.push(`P/F ${Math.round(d.pf)}`);
-  if(d.peep!=null) meta.push(`PEEP ${d.peep}`);
-  if(d.map!=null) meta.push(`MAP ${d.map}`);
+  if(d.pplat!=null) meta.push(`Pplat ${d.pplat.toFixed(0)}`);
+  if(d.peep!=null) meta.push(`PEEP ${d.peep.toFixed(0)}`);
+  if(d.map!=null) meta.push(`MAP ${d.map.toFixed(0)}`);
   meta.push(d.senior_ok ? "Sénior: OK" : "Sénior: NÃO");
   $("statusMeta").textContent = meta.join(" · ");
 
   $("statusSummary").textContent =
-    (d.mode==="recruitable")
-    ? "Recrutável: mostra cálculo e sugere protocolo stepwise (bloqueado como executável sem validação sénior)."
-    : "Obstrutivo: não sugere ARM clássica; guia estruturado anti-auto-PEEP (bloqueado sem validação sénior).";
+    d.mode==="recruitable"
+    ? "Recrutável: cálculo + sugestão stepwise + manual + fluxograma."
+    : "Obstrutivo: não sugere ARM clássica; guia estruturado.";
 }
 
 function run(){
   const d = derive(collect());
   const ev = evaluate(d);
 
-  // Outputs
-  $("rulesFired").innerHTML = renderRules(ev.fired);
+  $("rulesOut").innerHTML = renderRules(ev.rules);
   $("metricsOut").innerHTML = buildMetrics(d, ev);
-  $("protocolOut").innerHTML = buildProtocolAndSteps(d, ev);
-  $("guideOut").innerHTML = buildManual(d, ev);
-  $("checklistOut").innerHTML = buildChecklist(d);
+  $("manualOut").innerHTML = buildManual(d, ev);
+  $("checkOut").innerHTML = buildChecklist();
   $("flowOut").innerHTML = buildFlow(d, ev);
 
-  // Chart steps
-  let steps = [];
-  if(d.mode==="recruitable" && !ev.hardStop){
-    const p = suggestProtocolRecruitable(d);
-    steps = buildStepSequence(d.peep, p.step_peep, p.peep_max);
+  let p=null, steps=[];
+  if(d.mode==="recruitable" && !ev.hardStop && d.peep!=null){
+    p = suggestRecruitableProtocol(d);
+    steps = buildSteps(d.peep, p.step_peep, p.peep_max);
   }
-  drawPeepChart(steps, d.peep);
+  $("protocolOut").innerHTML = buildProtocol(d, ev);
+  drawChart(steps, d.peep);
 
-  // Note
-  $("noteOut").value = buildNote(d, ev, steps);
+  $("noteOut").value = buildNote(
+    d, ev,
+    p || {step_peep:"—",step_time:"—",peep_max:"—",spo2_stop:"—",map_drop_stop:"—",pplat_stop:"—"},
+    steps
+  );
 
-  // Status
   renderStatus(d, ev);
 }
 
 $("runBtn").addEventListener("click", run);
 
-/* --------- Clear + Examples --------- */
-$("clearBtn").addEventListener("click", ()=>{
-  const ids = ["dx","goal","weight","age_m","fio2","spo2","pao2","paco2","map","peep","pplat","pip","vt_mlkg",
-               "step_peep","step_time","peep_max","pplat_stop","map_drop_stop","spo2_stop","local_protocol"];
-  ids.forEach(id=>$(id).value="");
-  ["vaso","vent_mode","compliance_hint","air_leak","sedation","auto_peep","bronchospasm"].forEach(id=>$(id).selectedIndex=0);
-  $("senior_ok").checked = false;
-  $("mode").value="recruitable";
-  showModeSpecific(); refreshPresetList(); applyPreset();
+/* ========= BUTTONS ========= */
+$("fillRecruit").addEventListener("click", ()=>{
+  $("mode").value="recruitable"; showMode();
+  $("preset").value="ucip_default";
+  $("dx").value="ARDS / atelectasia (exemplo)";
+  $("goal").value="Melhorar oxigenação mantendo DP/Pplat próximos dos alvos";
+  $("weight").value="12"; $("age_m").value="24";
+  $("fio2").value="0.70"; $("spo2").value="88";
+  $("pao2").value="55"; $("paco2").value="60";
+  $("map").value="55"; $("vaso").value="no";
+  $("vent_mode").value="PC";
+  $("peep").value="8"; $("pplat").value="30"; $("pip").value="34"; $("vt_mlkg").value="6"; // Pplat acima do alvo para testar soft
+  $("compliance_hint").value="improves";
+  $("air_leak").value="no"; $("sedation").value="yes";
+  $("senior_ok").checked=true;
 
-  $("rulesFired").textContent="—";
+  // parâmetros vazios para sugestão automática
+  $("step_peep").value=""; $("step_time").value=""; $("peep_max").value="";
+  $("spo2_stop").value=""; $("map_drop_stop").value=""; $("pplat_stop").value="";
+  run();
+});
+
+$("fillObst").addEventListener("click", ()=>{
+  $("mode").value="obstructive"; showMode();
+  $("preset").value="ucip_default";
+  $("dx").value="Asma grave (exemplo)";
+  $("goal").value="Evitar hiperinsuflação/auto-PEEP";
+  $("weight").value="18"; $("age_m").value="96";
+  $("fio2").value="0.40"; $("spo2").value="92";
+  $("map").value="60"; $("vaso").value="no";
+  $("vent_mode").value="PC";
+  $("peep").value="5"; $("pplat").value=""; $("pip").value="32"; $("vt_mlkg").value="";
+  $("auto_peep").value="yes"; $("bronchospasm").value="yes";
+  $("air_leak").value="unknown"; $("sedation").value="yes";
+  $("senior_ok").checked=true;
+  run();
+});
+
+$("clearBtn").addEventListener("click", ()=>{
+  [
+    "dx","goal","weight","age_m","fio2","spo2","pao2","paco2","map","peep","pplat","pip","vt_mlkg",
+    "local_protocol","step_peep","step_time","peep_max","spo2_stop","map_drop_stop","pplat_stop"
+  ].forEach(id=>$(id).value="");
+  ["vaso","vent_mode","compliance_hint","air_leak","sedation","auto_peep","bronchospasm","preset"].forEach(id=>$(id).selectedIndex=0);
+  $("senior_ok").checked=false;
+  $("mode").value="recruitable"; showMode();
+
+  $("rulesOut").textContent="—";
   $("metricsOut").textContent="—";
   $("protocolOut").textContent="—";
-  $("guideOut").textContent="—";
-  $("checklistOut").textContent="—";
+  $("manualOut").textContent="—";
+  $("checkOut").textContent="—";
   $("flowOut").textContent="—";
   $("noteOut").value="";
   $("statusBadge").textContent="—";
   $("statusBadge").className="badge";
   $("statusMeta").textContent="Sem avaliação";
   $("statusSummary").textContent="Preenche e carrega em Avaliar.";
-  drawPeepChart([], null);
+  const ctx=$("chart").getContext("2d"); ctx.clearRect(0,0,$("chart").width,$("chart").height);
 });
 
-$("fillRecruit").addEventListener("click", ()=>{
-  $("mode").value="recruitable";
-  showModeSpecific(); refreshPresetList();
-  $("preset").value="ards_generic";
-
-  $("dx").value="ARDS / atelectasia (exemplo)";
-  $("goal").value="Melhorar oxigenação e manter DP aceitável";
-  $("weight").value="12";
-  $("age_m").value="24";
-  $("fio2").value="0.70";
-  $("spo2").value="88";
-  $("pao2").value="55";
-  $("paco2").value="60";
-  $("map").value="55";
-  $("vaso").value="no";
-  $("vent_mode").value="PC";
-  $("peep").value="8";
-  $("pplat").value="24";
-  $("pip").value="30";
-  $("vt_mlkg").value="6";
-  $("compliance_hint").value="improves_with_peep";
-  $("air_leak").value="no";
-  $("sedation").value="yes";
-  $("senior_ok").checked=true;
-
-  // deixa parâmetros vazios para ver sugestão automática
-  $("step_peep").value="";
-  $("step_time").value="";
-  $("peep_max").value="";
-  $("pplat_stop").value="";
-  $("map_drop_stop").value="";
-  $("spo2_stop").value="";
-  $("local_protocol").value="(Cole aqui o protocolo institucional.)";
-
-  run();
-});
-
-$("fillObst").addEventListener("click", ()=>{
-  $("mode").value="obstructive";
-  showModeSpecific(); refreshPresetList();
-  $("preset").value="asthma";
-
-  $("dx").value="Asma grave (exemplo)";
-  $("goal").value="Reduzir hiperinsuflação dinâmica; manter hemodinâmica";
-  $("weight").value="18";
-  $("age_m").value="96";
-  $("fio2").value="0.40";
-  $("spo2").value="92";
-  $("pao2").value="";
-  $("paco2").value="65";
-  $("map").value="60";
-  $("vaso").value="no";
-  $("vent_mode").value="PC";
-  $("peep").value="5";
-  $("pplat").value="";
-  $("pip").value="32";
-  $("vt_mlkg").value="";
-  $("auto_peep").value="yes";
-  $("bronchospasm").value="yes";
-  $("air_leak").value="unknown";
-  $("sedation").value="yes";
-  $("senior_ok").checked=true;
-
-  run();
-});
-
-/* --------- PWA SW --------- */
+/* ========= PWA SW ========= */
 if("serviceWorker" in navigator){
   window.addEventListener("load", ()=>{
     navigator.serviceWorker.register("./sw.js").catch(()=>{});
