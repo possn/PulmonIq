@@ -68,6 +68,12 @@
     .cb{display:flex;gap:8px;align-items:center;margin-top:6px}
     .cb input{width:18px;height:18px}
 
+    /* Decremental table */
+    table{width:100%;border-collapse:collapse}
+    th,td{border:1px solid var(--line);padding:8px;font-size:12px}
+    th{background:#0b1732;color:var(--text)}
+    .rowbest{outline:2px solid rgba(52,211,153,.7); outline-offset:-2px}
+
     /* Print */
     @media print{
       body{background:#fff;color:#000}
@@ -84,7 +90,7 @@
     <img src="assets/logo.png.PNG" alt="Pulmoniq logo">
     <div>
       <h1>Pulmoniq</h1>
-      <div class="sub">Pediatric ARM · Cálculo / Manual / Fluxograma · Sugestão automática de protocolo · Alvos: DP≤15 e Pplat≤28 (soft) · PDF · PWA</div>
+      <div class="sub">Pediatric ARM · Cálculo / Manual / Fluxograma · Sugestão automática de protocolo · Alvos: DP≤15 e Pplat≤28 (soft) · PDF · PWA · Decremental até PEEP óptima</div>
     </div>
   </header>
 
@@ -299,6 +305,19 @@
         <h2 style="margin:0 0 10px;font-size:14px">Mini-gráfico (sequência PEEP)</h2>
         <canvas id="chart" width="900" height="260"></canvas>
         <div class="small" style="margin-top:6px">Só visualização da sequência sugerida/definida.</div>
+
+        <div class="hr"></div>
+        <h2 style="margin:0 0 10px;font-size:14px">Titulação decremental (PEEP óptima)</h2>
+        <div class="small">
+          Decremental: <b>2 cmH₂O</b> a cada <b>60 s</b> (ou o vosso timing).<br>
+          Critério: <b>menor DP</b> (primário) + <b>menor FiO₂</b> (secundário) + <b>melhor SpO₂</b> (terciário).
+        </div>
+        <div class="actions">
+          <button id="decrPlanBtn">Gerar plano decremental</button>
+          <button id="decrBestBtn">Calcular PEEP óptima</button>
+          <button id="decrClearBtn">Limpar decremental</button>
+        </div>
+        <div id="decrOut" class="small" style="margin-top:10px">—</div>
       </div>
 
       <div class="tab" id="tabManual">
@@ -432,9 +451,7 @@ function renderRules(arr){
   }).join("");
 }
 
-/* ========= PROTOCOLO SUGERIDO (RECRUTÁVEL) =========
-   Sugere sempre que haja PEEP (mesmo que risco alto), excepto hard stop.
-*/
+/* ========= PROTOCOLO SUGERIDO (RECRUTÁVEL) ========= */
 function suggestRecruitableProtocol(d){
   const preset = getPreset();
   const p = {
@@ -446,12 +463,10 @@ function suggestRecruitableProtocol(d){
     pplat_stop: d.pplat_stop ?? preset.pplat_stop,
   };
 
-  // heurísticas conservadoras
   if(d.vaso==="yes") p.peep_max = Math.min(p.peep_max, 14);
   if(d.age_m!=null && d.age_m < 6) p.peep_max = Math.min(p.peep_max, 14);
   if(d.compliance_hint==="worsens") p.peep_max = Math.min(p.peep_max, 14);
 
-  // stop plateau sugerido (não é o alvo, é limite operativo sugerido)
   if(p.pplat_stop==null) p.pplat_stop = 34;
   return p;
 }
@@ -475,60 +490,37 @@ function evaluate(d){
   const rules = [];
   let benefit=0, risk=0;
 
-  // completeness
   if(d.fio2==null || d.spo2==null) addRule(rules,"warn","Oxigenação incompleta","FiO₂ e SpO₂ recomendados.");
   if(d.map==null) addRule(rules,"warn","MAP não preenchida","Avaliação hemodinâmica recomendada.");
   if(d.peep==null) addRule(rules,"warn","PEEP não preenchida","Sem PEEP actual não há sequência stepwise.");
 
-  // HARD STOP
   if(d.air_leak==="yes"){
     addRule(rules,"bad","Hard stop: fuga aérea/pneumotórax não drenado","Evitar ARM/pressões elevadas até resolver/excluir.");
     risk += 10;
   }
 
-  // soft risk modifiers
   if(d.sedation==="no"){ addRule(rules,"warn","Sedação/sincronia inadequada","Optimizar antes/durante ARM."); risk += 1; }
   if(d.vaso==="yes"){ addRule(rules,"warn","Vasoactivos em escalada","Risco hemodinâmico com ↑pressão intratorácica."); risk += 2; }
 
-  // DP soft target
   if(d.dp!=null){
     addRule(rules,"info","Driving pressure",`DP=${d.dp.toFixed(1)} cmH₂O (alvo UCIP ≤ ${UCIP_DP_TARGET}).`);
-    if(d.dp > UCIP_DP_TARGET && d.dp <= DP_SOFT_HIGH){
-      addRule(rules,"warn","DP acima do alvo (soft)","Permitido; risco ↑. Ajustar ventilação e vigiar.");
-      risk += 1;
-    } else if(d.dp > DP_SOFT_HIGH){
-      addRule(rules,"warn","DP muito elevado (soft high)","Permitido; risco ↑↑. Limitar escalada e reavaliar estratégia.");
-      risk += 2;
-    } else {
-      benefit += 1;
-    }
-  } else {
-    addRule(rules,"info","DP indisponível","Precisas de Pplat e PEEP para DP.");
-  }
+    if(d.dp > UCIP_DP_TARGET && d.dp <= DP_SOFT_HIGH){ addRule(rules,"warn","DP acima do alvo (soft)","Permitido; risco ↑. Ajustar ventilação e vigiar."); risk += 1; }
+    else if(d.dp > DP_SOFT_HIGH){ addRule(rules,"warn","DP muito elevado (soft high)","Permitido; risco ↑↑. Limitar escalada e reavaliar estratégia."); risk += 2; }
+    else { benefit += 1; }
+  } else addRule(rules,"info","DP indisponível","Precisas de Pplat e PEEP para DP.");
 
-  // Plateau soft target
   if(d.pplat!=null){
     addRule(rules,"info","Plateau",`Pplat=${d.pplat.toFixed(1)} (alvo UCIP ≤ ${UCIP_PPLAT_TARGET}).`);
-    if(d.pplat > UCIP_PPLAT_TARGET && d.pplat <= PPLAT_SOFT_HIGH){
-      addRule(rules,"warn","Pplat acima do alvo (soft)","Permitido; risco ↑. Evitar aumentos desnecessários e vigiar.");
-      risk += 1;
-    } else if(d.pplat > PPLAT_SOFT_HIGH){
-      addRule(rules,"warn","Pplat muito elevado (soft high)","Permitido; risco ↑↑. Evitar aumentar ainda mais; reavaliar.");
-      risk += 2;
-    }
+    if(d.pplat > UCIP_PPLAT_TARGET && d.pplat <= PPLAT_SOFT_HIGH){ addRule(rules,"warn","Pplat acima do alvo (soft)","Permitido; risco ↑. Evitar aumentos desnecessários e vigiar."); risk += 1; }
+    else if(d.pplat > PPLAT_SOFT_HIGH){ addRule(rules,"warn","Pplat muito elevado (soft high)","Permitido; risco ↑↑. Evitar aumentar ainda mais; reavaliar."); risk += 2; }
   }
 
-  // recruitability benefit
   if(d.mode==="recruitable"){
     if(d.compliance_hint==="improves"){ addRule(rules,"info","Recrutabilidade provável","Complacência melhora com ↑PEEP."); benefit += 2; }
     if(d.compliance_hint==="worsens"){ addRule(rules,"warn","Possível não-recrutável/hiperinsuflação","Complacência piora com ↑PEEP."); risk += 1; }
-    if(d.spo2!=null && d.fio2!=null && d.spo2<90 && d.fio2>=0.6){
-      addRule(rules,"info","Hipoxemia com FiO₂ alta","Potencial benefício de optimização/recrutamento.");
-      benefit += 2;
-    }
+    if(d.spo2!=null && d.fio2!=null && d.spo2<90 && d.fio2>=0.6){ addRule(rules,"info","Hipoxemia com FiO₂ alta","Potencial benefício de optimização/recrutamento."); benefit += 2; }
   }
 
-  // obstructive
   if(d.mode==="obstructive"){
     addRule(rules,"info","Modo obstrutivo","Não sugerir ARM clássica; guia anti-auto-PEEP/hiperinsuflação.");
     if(d.auto_peep==="yes"){ addRule(rules,"warn","Auto-PEEP provável","Evitar escalada de PEEP/pressões."); risk += 2; }
@@ -539,16 +531,9 @@ function evaluate(d){
   const score = benefit - risk;
 
   let cls="warn", status="Cautela";
-  if(hardStop){
-    cls="bad"; status="NÃO RECOMENDADO (hard stop)";
-  } else if(d.mode==="obstructive"){
-    cls = (risk>=3) ? "warn" : "good";
-    status = "Sem ARM clássica (guia obstrutivo)";
-  } else {
-    if(score>=2){ cls="good"; status="ARM possível (benefício provável)"; }
-    else if(score<=-2){ cls="warn"; status="ARM de benefício duvidoso (risco/benefício)"; }
-    else { cls="warn"; status="Cautela (optimizar/mais dados)"; }
-  }
+  if(hardStop){ cls="bad"; status="NÃO RECOMENDADO (hard stop)"; }
+  else if(d.mode==="obstructive"){ cls = (risk>=3) ? "warn" : "good"; status = "Sem ARM clássica (guia obstrutivo)"; }
+  else { if(score>=2){ cls="good"; status="ARM possível (benefício provável)"; } else if(score<=-2){ cls="warn"; status="ARM de benefício duvidoso (risco/benefício)"; } else { cls="warn"; status="Cautela (optimizar/mais dados)"; } }
 
   return {rules, benefit, risk, score, hardStop, cls, status};
 }
@@ -586,7 +571,7 @@ function buildProtocol(d, ev){
   const paramsLine =
     `Parâmetros sugeridos: step=${p.step_peep} | tempo=${p.step_time}s | PEEPmax=${p.peep_max} | stopSpO₂=${p.spo2_stop}% | stopMAPdrop=${p.map_drop_stop} | stopPplat=${p.pplat_stop} (operacional) | alvos soft: DP≤${UCIP_DP_TARGET}, Pplat≤${UCIP_PPLAT_TARGET}.`;
 
-  const stop = `Parar se: SpO₂ &lt; ${p.spo2_stop}% | queda MAP ≥ ${p.map_drop_stop} mmHg | Pplat ≥ ${p.pplat_stop} | ou intolerância clínica.`;
+  const stop = `Parar se: SpO₂ < ${p.spo2_stop}% | queda MAP ≥ ${p.map_drop_stop} mmHg | Pplat ≥ ${p.pplat_stop} | ou intolerância clínica.`;
 
   const seq = steps.length ? `
     <ol class="list">
@@ -633,7 +618,7 @@ function buildManual(d, ev){
         <li>Monitorização: SpO₂ contínua, PA/MAP, EtCO₂, pressões; registar baseline.</li>
         <li>Optimizar sincronia (sedação/analgesia) conforme protocolo.</li>
         <li>Alvos soft UCIP: DP≤${UCIP_DP_TARGET} e Pplat≤${UCIP_PPLAT_TARGET} sempre que possível (não proíbem).</li>
-        <li>Critérios de paragem (operacionais): SpO₂&lt;${p.spo2_stop}%, MAP↓≥${p.map_drop_stop}, Pplat≥${p.pplat_stop} ou intolerância clínica.</li>
+        <li>Critérios de paragem (operacionais): SpO₂<${p.spo2_stop}%, MAP↓≥${p.map_drop_stop}, Pplat≥${p.pplat_stop} ou intolerância clínica.</li>
       </ul>
     </div>
     <div class="box" style="margin-top:10px">
@@ -717,13 +702,122 @@ function drawChart(steps, peep0){
   values.forEach((v,i)=>{const x=xAt(i), y=yAt(v); ctx.beginPath(); ctx.arc(x,y,3.2,0,Math.PI*2); ctx.fill(); ctx.fillText(String(Math.round(v*10)/10), x-8, y-10);});
 }
 
+/* ========= DECREMENTAL ========= */
+const DECR = { active:false, plan:[], best:null };
+function decrReset(){ DECR.active=false; DECR.plan=[]; DECR.best=null; if($("decrOut")) $("decrOut").innerHTML="—"; }
+function decrGuard(){
+  if(!LAST.d || !LAST.ev) return {ok:false, msg:"Executa primeiro: Avaliar."};
+  if(LAST.d.mode!=="recruitable") return {ok:false, msg:"Modo obstrutivo: não aplicável."};
+  if(LAST.ev.hardStop) return {ok:false, msg:"Hard stop activo: não iniciar decremental."};
+  if(LAST.d.peep==null) return {ok:false, msg:"Falta PEEP actual."};
+  if(!LAST.p) return {ok:false, msg:"Sem parâmetros (faz Avaliar com modo recrutável)."};
+  return {ok:true, msg:"ok"};
+}
+function genDecrPlan(){
+  const step=2;
+  const start = (LAST.p && Number.isFinite(LAST.p.peep_max)) ? LAST.p.peep_max : LAST.d.peep;
+  const end = LAST.d.peep;
+  const plan=[];
+  if(start==null || end==null) return plan;
+  let cur = start;
+  let i=1;
+  while(cur >= end - 1e-9){
+    plan.push({i, peep:Number(cur.toFixed(1)), dp:null, fio2:null, spo2:null});
+    cur -= step;
+    i++;
+    if(i>30) break;
+  }
+  return plan;
+}
+function renderDecrTable(){
+  if(!DECR.plan.length){
+    $("decrOut").innerHTML=`<div class="warnbox"><b class="warn">Sem plano</b>: gera o plano decremental primeiro.</div>`;
+    return;
+  }
+  let html = `
+    <div class="box" style="margin-bottom:10px">
+      <b>Plano decremental</b>
+      <div class="small" style="margin-top:6px">
+        Preenche DP, FiO₂ e SpO₂ em cada step (após ~60s). Depois carrega em “Calcular PEEP óptima”.
+      </div>
+    </div>
+    <table id="decrTable">
+      <thead>
+        <tr><th>Step</th><th>PEEP</th><th>DP</th><th>FiO₂</th><th>SpO₂</th></tr>
+      </thead>
+      <tbody>
+  `;
+  html += DECR.plan.map((r, idx)=>`
+    <tr data-idx="${idx}">
+      <td class="mono">${r.i}</td>
+      <td class="mono">${r.peep.toFixed(1)}</td>
+      <td><input inputmode="decimal" data-field="dp" value="${r.dp??""}" placeholder="ex.: 14"></td>
+      <td><input inputmode="decimal" data-field="fio2" value="${r.fio2??""}" placeholder="ex.: 0.45"></td>
+      <td><input inputmode="decimal" data-field="spo2" value="${r.spo2??""}" placeholder="ex.: 93"></td>
+    </tr>
+  `).join("");
+  html += `</tbody></table><div id="decrBestBox" style="margin-top:10px">—</div>`;
+  $("decrOut").innerHTML = html;
+
+  $("decrTable").querySelectorAll("input").forEach(inp=>{
+    inp.addEventListener("input", ()=>{
+      const idx = Number(inp.closest("tr").dataset.idx);
+      const f = inp.dataset.field;
+      DECR.plan[idx][f] = n(inp.value);
+      DECR.best=null;
+      const b=$("decrBestBox"); if(b) b.innerHTML="—";
+      inp.closest("tbody").querySelectorAll("tr").forEach(x=>x.classList.remove("rowbest"));
+    });
+  });
+}
+function computeDecrBest(){
+  const rows = DECR.plan.map((r, idx)=>({...r, idx}))
+    .filter(r=>Number.isFinite(r.dp) && Number.isFinite(r.fio2) && Number.isFinite(r.spo2));
+  if(!rows.length) return null;
+
+  let best = rows[0];
+  for(const r of rows.slice(1)){
+    if(r.dp < best.dp) best=r;
+    else if(r.dp === best.dp && r.fio2 < best.fio2) best=r;
+    else if(r.dp === best.dp && r.fio2 === best.fio2 && r.spo2 > best.spo2) best=r;
+  }
+  return best;
+}
+function renderDecrBest(best){
+  const tbody = $("decrTable")?.querySelector("tbody");
+  if(tbody){
+    tbody.querySelectorAll("tr").forEach(x=>x.classList.remove("rowbest"));
+    const tr = tbody.querySelector(`tr[data-idx="${best.idx}"]`);
+    if(tr) tr.classList.add("rowbest");
+  }
+  $("decrBestBox").innerHTML = `
+    <div class="okbox">
+      <b class="good">PEEP óptima sugerida: ${best.peep.toFixed(1)} cmH₂O</b><br>
+      <span class="mono">DP ${best.dp.toFixed(1)} | FiO₂ ${best.fio2.toFixed(2)} | SpO₂ ${best.spo2.toFixed(0)}%</span><br>
+      <div class="small" style="margin-top:6px">
+        Critério: menor DP → menor FiO₂ → melhor SpO₂. Validação clínica obrigatória.
+      </div>
+    </div>
+  `;
+}
+function decrAppendToNote(note){
+  if(!DECR.best) return note;
+  const b=DECR.best;
+  return note + `
+
+FASE DECREMENTAL (2 cmH₂O / ~60 s; critério: menor DP + menor FiO₂ + melhor SpO₂)
+- PEEP óptima sugerida: ${b.peep.toFixed(1)} cmH₂O
+- DP: ${b.dp.toFixed(1)} | FiO₂: ${b.fio2.toFixed(2)} | SpO₂: ${b.spo2.toFixed(0)}%
+`;
+}
+
 /* ========= NOTE / COPY / PDF ========= */
 function buildNote(d, ev, p, steps){
   const now=new Date().toISOString().slice(0,19).replace("T"," ");
   const fired = ev.rules.map(r=>`- [${r.level.toUpperCase()}] ${r.title}${r.detail ? " — "+r.detail : ""}`).join("\n");
   const seq = (steps && steps.length) ? steps.map(s=>`- PEEP ${s.peep.toFixed(1)} por ${p.step_time}s`).join("\n") : "—";
 
-  return `Pulmoniq — Pediatric ARM (educacional) | ${now}
+  let base = `Pulmoniq — Pediatric ARM (educacional) | ${now}
 Modo: ${d.mode==="recruitable"?"Recrutável":"Obstrutivo"} | Preset: ${d.preset} | Sénior: ${d.senior_ok?"SIM":"NÃO"}
 Dx/Objetivo: ${d.dx||"—"} | ${d.goal||"—"}
 
@@ -750,6 +844,7 @@ ${seq}`
 Notas locais:
 ${d.local_protocol || "—"}
 `;
+  return decrAppendToNote(base);
 }
 
 $("copyBtn").addEventListener("click", async ()=>{
@@ -761,12 +856,11 @@ $("copyBtn").addEventListener("click", async ()=>{
     alert("Falhou a cópia automática. Copia manualmente.");
   }
 });
-
-$("pdfBtn").addEventListener("click", ()=>{
-  window.print(); // PDF pelo diálogo do iOS/Browser
-});
+$("pdfBtn").addEventListener("click", ()=>{ window.print(); });
 
 /* ========= MAIN RUN ========= */
+const LAST = { d:null, ev:null, p:null, steps:[] };
+
 function renderStatus(d, ev){
   $("statusBadge").textContent = ev.status;
   $("statusBadge").className = "badge " + ev.cls;
@@ -789,6 +883,8 @@ function run(){
   const d = derive(collect());
   const ev = evaluate(d);
 
+  LAST.d=d; LAST.ev=ev; LAST.p=null; LAST.steps=[];
+
   $("rulesOut").innerHTML = renderRules(ev.rules);
   $("metricsOut").innerHTML = buildMetrics(d, ev);
   $("manualOut").innerHTML = buildManual(d, ev);
@@ -799,9 +895,13 @@ function run(){
   if(d.mode==="recruitable" && !ev.hardStop && d.peep!=null){
     p = suggestRecruitableProtocol(d);
     steps = buildSteps(d.peep, p.step_peep, p.peep_max);
+    LAST.p=p; LAST.steps=steps;
   }
+
   $("protocolOut").innerHTML = buildProtocol(d, ev);
   drawChart(steps, d.peep);
+
+  if(d.mode!=="recruitable" || ev.hardStop) decrReset();
 
   $("noteOut").value = buildNote(
     d, ev,
@@ -811,8 +911,32 @@ function run(){
 
   renderStatus(d, ev);
 }
-
 $("runBtn").addEventListener("click", run);
+
+/* ========= DECR EVENTS ========= */
+$("decrPlanBtn").addEventListener("click", ()=>{
+  const g = decrGuard();
+  if(!g.ok){ $("decrOut").innerHTML = `<div class="warnbox"><b class="warn">Não disponível</b>: ${esc(g.msg)}</div>`; return; }
+  DECR.active=true; DECR.best=null; DECR.plan = genDecrPlan();
+  renderDecrTable();
+});
+$("decrBestBtn").addEventListener("click", ()=>{
+  const g = decrGuard();
+  if(!g.ok){ $("decrOut").innerHTML = `<div class="warnbox"><b class="warn">Não disponível</b>: ${esc(g.msg)}</div>`; return; }
+  if(!DECR.active || !DECR.plan.length){ $("decrOut").innerHTML = `<div class="warnbox"><b class="warn">Sem plano</b>: gera primeiro o plano decremental.</div>`; return; }
+  const best = computeDecrBest();
+  if(!best){ const box=document.getElementById("decrBestBox"); if(box) box.innerHTML=`<div class="warnbox"><b class="warn">Dados insuficientes</b>: preenche DP, FiO₂ e SpO₂ em ≥1 step.</div>`; return; }
+  DECR.best=best; renderDecrBest(best);
+  const p = LAST.p || {step_peep:"—",step_time:"—",peep_max:"—",spo2_stop:"—",map_drop_stop:"—",pplat_stop:"—"};
+  $("noteOut").value = buildNote(LAST.d, LAST.ev, p, LAST.steps);
+});
+$("decrClearBtn").addEventListener("click", ()=>{
+  decrReset();
+  if(LAST.d && LAST.ev){
+    const p = LAST.p || {step_peep:"—",step_time:"—",peep_max:"—",spo2_stop:"—",map_drop_stop:"—",pplat_stop:"—"};
+    $("noteOut").value = buildNote(LAST.d, LAST.ev, p, LAST.steps);
+  }
+});
 
 /* ========= BUTTONS ========= */
 $("fillRecruit").addEventListener("click", ()=>{
@@ -825,14 +949,13 @@ $("fillRecruit").addEventListener("click", ()=>{
   $("pao2").value="55"; $("paco2").value="60";
   $("map").value="55"; $("vaso").value="no";
   $("vent_mode").value="PC";
-  $("peep").value="8"; $("pplat").value="30"; $("pip").value="34"; $("vt_mlkg").value="6"; // Pplat acima do alvo para testar soft
+  $("peep").value="8"; $("pplat").value="30"; $("pip").value="34"; $("vt_mlkg").value="6";
   $("compliance_hint").value="improves";
   $("air_leak").value="no"; $("sedation").value="yes";
   $("senior_ok").checked=true;
-
-  // parâmetros vazios para sugestão automática
   $("step_peep").value=""; $("step_time").value=""; $("peep_max").value="";
   $("spo2_stop").value=""; $("map_drop_stop").value=""; $("pplat_stop").value="";
+  decrReset();
   run();
 });
 
@@ -849,6 +972,7 @@ $("fillObst").addEventListener("click", ()=>{
   $("auto_peep").value="yes"; $("bronchospasm").value="yes";
   $("air_leak").value="unknown"; $("sedation").value="yes";
   $("senior_ok").checked=true;
+  decrReset();
   run();
 });
 
@@ -873,6 +997,7 @@ $("clearBtn").addEventListener("click", ()=>{
   $("statusMeta").textContent="Sem avaliação";
   $("statusSummary").textContent="Preenche e carrega em Avaliar.";
   const ctx=$("chart").getContext("2d"); ctx.clearRect(0,0,$("chart").width,$("chart").height);
+  decrReset();
 });
 
 /* ========= PWA SW ========= */
